@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.github.mobotx";
+
+package mobot;
+
+message SensorMetadata{
+  string vendor = 1;
+  float version = 2;
+  float resolution = 3;
+  float max_range = 4;
+}

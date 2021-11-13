@@ -1,0 +1,76 @@
+# MIT License
+#
+# Copyright (c) 2021 Mobotx
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+import threading
+
+from mobot.brain.agent import Agent
+from mobot.utils.terminal import get_key, CTRL_PLUS_C
+from mobot.utils.image_grid import ImageGrid
+
+class MyAgent(Agent):
+    def __init__(self):
+        Agent.__init__(self)
+        self.chassis.enable()
+        self.control_thread = threading.Thread(target=self.control_thread)
+
+        self.camera.register_callback(self.camera_cb)
+        self.image_grid = ImageGrid(self)
+
+        self.bindings = {'w':( 0.45,  0.0),\
+                         'a':( 0.0,  2.6),\
+                         's':(-0.45,  0.0),\
+                         'd':( 0.0, -2.6),\
+                         ' ':( 0.0,  0.0)}
+        self.help_msg = """
+        Moving around:
+                w
+           a    s    d
+
+        Spacebar to Stop!
+        CTRL-C to quit
+        """
+
+    def on_start(self):
+        self.logger.info("Waiting for chassis to be available...")
+        if self.chassis.wait_until_available():
+            self.logger.info("Chassis available!")
+            self.control_thread.start()
+
+    def control_thread(self):
+        self.logger.info(self.help_msg)
+        while self.ok():
+            key = get_key(0.1)
+            if key == CTRL_PLUS_C:
+                self.terminate()
+                break
+            if key in self.bindings:
+                self.chassis.set_cmdvel(v=self.bindings[key][0], w=self.bindings[key][1])
+
+    def camera_cb(self, image, metadata):
+        self.image_grid.new_image(image)
+
+def main():
+    my_agent = MyAgent()
+    my_agent.start()
+
+if __name__ == "__main__":
+    main()

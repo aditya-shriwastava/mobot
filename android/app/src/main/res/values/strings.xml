@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Mobot</string>
+
+    <string name="mobot_website">"https://mobotx.github.io"</string>
+
+    <string name="status_disconnecting">Disconnecting...</string>
+    <string name="status_disconnected">Disconnected!</string>
+    <string name="status_connecting">Connecting...</string>
+    <string name="status_connected">Connected!</string>
+
+    <string name="button_connect">CONNECT</string>
+    <string name="button_disconnect">DISCONNECT</string>
+
+    <string name="face_hz">5.0</string>
+    <string name="face_text_asleep">Connect to Wake up Mobot!</string>
+    <string name="face_text_awake">Connect chassis to make\nMobot Happy!</string>
+    <string name="face_text_happy">Lets Play!</string>
+    <string name="face_text_lost">Lost connection with server!</string>
+
+    <string name="heart_beat_hz">5.0</string>
+    <string name="heart_beat_alpha">0.2</string>
+
+    <string name="camera_hz">10.0</string>
+
+    <string name="imu_hz">30.0</string>
+</resources>

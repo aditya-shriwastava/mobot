@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+import "common.proto";
+import "imu.proto";
+option java_multiple_files = true;
+option java_package = "io.github.mobotx";
+
+package mobot;
+
+service Magnetometer{
+  rpc SetMagnetometerMetadata (SensorMetadata) returns (Success) {}
+  rpc NewMagnetometerData (Quaternion) returns (Success) {}
+}

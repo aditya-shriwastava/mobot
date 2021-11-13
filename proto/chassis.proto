@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.github.mobotx";
+
+package mobot;
+
+service Chassis{
+  rpc ChassisCmdStream(ChassisMetadata) returns (stream CmdVel) {}
+}
+
+message CmdVel{
+  float v = 1;
+  float w = 2;
+}
+
+message ChassisMetadata{
+  float bounding_radius = 1;
+  float bounding_height = 2;
+  float noload_max_linear_speed = 3;
+  float noload_max_angular_speed = 4;
+}

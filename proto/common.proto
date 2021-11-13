@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.github.mobotx";
+
+package mobot;
+
+/*************************** Communication Msgs *********************************/
+message Success{
+  bool success = 1;
+}
+
+message Empty{
+}
+/******************************************************************************/
+
+/*************************** Geometry Msgs *********************************/
+message Vector3{
+  float x = 1;
+  float y = 2;
+  float z = 3;
+}
+
+message Quaternion{
+  float x = 1;
+  float y = 2;
+  float z = 3;
+  float w = 4;
+}
+/******************************************************************************/

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+import "common.proto";
+option java_multiple_files = true;
+option java_package = "io.github.mobotx";
+
+package mobot;
+
+service Connection{
+  rpc Ping (Empty) returns (Empty) {}
+  rpc AttachBodyStream (Empty) returns (stream URI) {}
+  rpc AttachBrainStream (Empty) returns (stream URI) {}
+}
+
+message URI{
+  string uri = 1;
+}

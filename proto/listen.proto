@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+import "common.proto";
+import "talk.proto";
+option java_multiple_files = true;
+option java_package = "io.github.mobotx";
+
+package mobot;
+
+service Listen{
+  rpc SetListenMetadata (Empty) returns (Success) {}
+  rpc NewListenData (Message) returns (Success) {}
+}
