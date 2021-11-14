@@ -52,12 +52,12 @@ class Connection:
 
     def attach_thread(self):
         try:
-            self.logger.info(f"Waiting for Body to be attached to spline...")
+            self.logger.info(f"Waiting for Body to be attached to spine...")
             for body in self.attach_brain_iterator:
-                self.logger.info(f"Body at {body.uri} attached to spline")
+                self.logger.info(f"Body at {body.uri} attached to spine")
                 self._body_uri = body.uri
         except grpc.RpcError:
-            self.logger.error("Brain detached from spline!")
+            self.logger.error("Brain detached from spine!")
             signal.alarm(0)
 
     def detach(self):
