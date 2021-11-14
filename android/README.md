@@ -1,6 +1,5 @@
-<p align="center">
-  <img src="./docs/app_details.png" alt="App Details" width="600"/>
-</p>
+![App Details](./docs/app_details.png)
 
-## Tested on:
+# Tested on:
+
 Redmi Note 5
