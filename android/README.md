@@ -1,5 +1,3 @@
-![App Details](./docs/app_details.png)
-
-# Tested on:
-
-Redmi Note 5
+<img src="./docs/app_details.png"
+     alt="App Details"
+     width="400"/>
