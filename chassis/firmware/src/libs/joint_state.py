@@ -2,14 +2,16 @@ import math
 from machine import Timer
 
 class JointState:
-    def __init__(self, encoder):
+    def __init__(self, encoder, ROTATION_PER_TICK):
+        self.ROTATION_PER_TICK = ROTATION_PER_TICK
         self.encoder = encoder
         self.w = 0.0 ## Public
         self.theta = 0.0 ## Public
 
     def update(self, dt): ## Public
-        self.w = (self.encoder.theta - self.theta) / dt
-        self.theta = self.encoder.theta
+        theta = self.encoder.ticks * self.ROTATION_PER_TICK
+        self.w = (theta - self.theta) / dt
+        self.theta = theta
 
     def update_cb(self, timer):
         self.update(self.dt)

@@ -6,11 +6,14 @@ class Motor:
     cha and chb is such when cha is high and chb is low moter will rotate
     in counter-clockwise direction (i.e. +ve direction)
     '''
-    def __init__(self, cha_pin_no, chb_pin_no, PWM_MAX=1023, PWM_HZ=2000):
+    def __init__(self, cha_pin_no, chb_pin_no, min_op, PWM_MAX=1023, PWM_HZ=2000):
         self.cha = PWM(Pin(cha_pin_no), freq=PWM_HZ, duty=0)
         self.chb = PWM(Pin(chb_pin_no), freq=PWM_HZ, duty=0)
 
         self.PWM_MAX = PWM_MAX
+        ## min_op (Minimum operating point)
+        ## Minimum operating PWM = min_op * PWM_MAX
+        self.min_op = min_op ## Public
 
     '''
     -1.0 <= cmd <= 1.0

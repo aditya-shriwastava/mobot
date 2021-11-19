@@ -35,10 +35,10 @@ class MyAgent(Agent):
         self.camera.register_callback(self.camera_cb)
         self.image_grid = ImageGrid(self)
 
-        self.bindings = {'w':( 0.45,  0.0),\
-                         'a':( 0.0,  2.6),\
-                         's':(-0.45,  0.0),\
-                         'd':( 0.0, -2.6),\
+        self.bindings = {'w':( 0.07,  0.0),\
+                         'a':( 0.0,  0.5),\
+                         's':(-0.07,  0.0),\
+                         'd':( 0.0, -0.5),\
                          ' ':( 0.0,  0.0)}
         self.help_msg = """
         Moving around:

@@ -1,8 +1,7 @@
 # Communication API
 ```mmd
 graph LR;
-  a(mobot-android) -->|'CMDVEL:v,w\r'| b(mobot-chassis);
-  b -->|'ODOM:x,y,yaw\r'| a;
+  a(mobot-android) -->|'v,w\r'| b(mobot-chassis);
 ```
 where, v, w, x, y, & yaw are floats is SI unit. 
 - v: Translation Velocity
@@ -10,3 +9,7 @@ where, v, w, x, y, & yaw are floats is SI unit.
 - x: x-coordinate of position
 - y: y-coordinate of position
 - yaw: rotation about z-axis
+
+# Data
+v: [0.0325, 0.11375]
+w: [0.448, 1.568]

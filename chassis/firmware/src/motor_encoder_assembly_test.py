@@ -2,30 +2,19 @@ import math
 from machine import Timer
 
 from libs.motor import Motor
-from libs.encoder import QuadratureEncoder
+from libs.encoder import MonoDirEncoder
 from libs.led import Led
 from libs.joint_state import JointState
-
-DLED = 2
-
-M_CHA = 13
-M_CHB = 12
-
-E_TPR = 490
-E_RPT = (1/E_TPR) * (2 * math.pi)
-E_CHA = 25
-E_CHB = 33
-
-STATE_ESTIMATE_HZ = 10.0
+from mobot_data import *
 
 class MotorEncoderAssemblyTest:
     def __init__(self):
         self.dled = Led(DLED)
-        self.motor = Motor(M_CHA, M_CHB)
+        self.motor = Motor(MR_CHA, MR_CHB, MIN_OPR)
         self.motor.set_cmd(0)
-        self.encoder = QuadratureEncoder(E_CHA, E_CHB, E_RPT)
+        self.encoder = MonoDirEncoder(ER_CHA, ER_CHB)
 
-        self.joint_state = JointState(self.encoder)
+        self.joint_state = JointState(self.encoder, E_RPT)
         self.joint_state.estimate(state_estimate_hz=STATE_ESTIMATE_HZ, timer_no=1)
 
         self.timer = Timer(2)

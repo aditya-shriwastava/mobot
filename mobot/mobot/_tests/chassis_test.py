@@ -30,10 +30,10 @@ class MyAgent(Agent):
         self.chassis.enable()
         self.control_thread = threading.Thread(target=self.control_thread)
 
-        self.bindings = {'w':( 0.2,  0.0),\
-                         'a':( 0.0,  1.5),\
-                         's':(-0.2,  0.0),\
-                         'd':( 0.0, -1.5),\
+        self.bindings = {'w':( 0.07,  0.0),\
+                         'a':( 0.0,  0.5),\
+                         's':(-0.07,  0.0),\
+                         'd':( 0.0, -0.5),\
                          ' ':( 0.0,  0.0)}
         self.help_msg = """
         Moving around:
