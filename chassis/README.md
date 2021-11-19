@@ -1,5 +1,3 @@
-> Chassis for Mobot
-
 ## BOM
 |              Item               |  Quantity |
 |:-------------------------------:|:---------:|
