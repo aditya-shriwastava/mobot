@@ -81,10 +81,25 @@ class Agent:
         self.listen = Listen(self.logger, self.__connection)
         proto.listen_pb2_grpc.add_ListenServicer_to_server(self.listen, self.__server)
 
+        self.__actuators = [("chassis", self.chassis),\
+                ("flashlight", self.flashlight),\
+                ("speak", self.speak)]
+
     def start(self):
         self.__server.start()
         self.__connection.attach()
+        self.__wait_until_available()
         self.on_start()
+
+    ## Waits until all the actuators that are enabled is available
+    def __wait_until_available(self):
+        for actuator_name, actuator in self.__actuators:
+            if actuator._is_enabled():
+                self.logger.info(f"Waiting for {actuator_name} to be available...")
+                if actuator.wait_until_available():
+                    self.logger.info(f"{actuator_name} available!")
+                else:
+                    break
 
     def on_start(self):
         pass

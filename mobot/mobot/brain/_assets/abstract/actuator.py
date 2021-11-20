@@ -80,6 +80,9 @@ class Actuator(Asset):
     def enable(self):
         self.__enabled = True
 
+    def _is_enabled(self):
+        return self.__enabled
+
     def wait_until_available(self):
         while not self.available:
             time.sleep(0.1)
