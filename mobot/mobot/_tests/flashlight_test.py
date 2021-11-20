@@ -27,20 +27,17 @@ class MyAgent(Agent):
     def __init__(self):
         Agent.__init__(self)
         self.flashlight.enable()
-
         self.control_thread = threading.Thread(target=self.control_thread)
 
+    def on_start(self):
+        self.control_thread.start()
+
     def control_thread(self):
-        self.logger.info("Waiting for flashlight to be available...")
-        if self.flashlight.wait_until_available():
-            self.logger.info("Flashlight available!")
-            self.logger.info("Flashlight Turned On")
-            self.flashlight.turn_on()
+        self.flashlight.turn_on()
 
 def main():
     my_agent = MyAgent()
     my_agent.start()
-    my_agent.control_thread.start()
 
 if __name__ == "__main__":
     main()

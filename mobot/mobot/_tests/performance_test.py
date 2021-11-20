@@ -77,8 +77,7 @@ class PerformanceTestAgent(Agent):
 
     def on_start(self):
         self.perf_disp_thread.start()
-        if self.chassis.wait_until_available():
-            self.control_thread.start()
+        self.control_thread.start()
 
     def perf_disp_thread(self):
         stdscr = curses.initscr()

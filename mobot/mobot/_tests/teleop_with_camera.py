@@ -50,10 +50,7 @@ class MyAgent(Agent):
         """
 
     def on_start(self):
-        self.logger.info("Waiting for chassis to be available...")
-        if self.chassis.wait_until_available():
-            self.logger.info("Chassis available!")
-            self.control_thread.start()
+        self.control_thread.start()
 
     def control_thread(self):
         self.logger.info(self.help_msg)
