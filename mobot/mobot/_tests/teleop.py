@@ -25,6 +25,7 @@ import threading
 from mobot.brain.agent import Agent
 from mobot.utils.terminal import get_key, CTRL_PLUS_C
 from mobot.utils.image_grid import ImageGrid
+from mobot.utils.rate import Rate
 
 class TeleopAgent(Agent):
     def __init__(self):
@@ -54,6 +55,7 @@ class TeleopAgent(Agent):
 
     def control_thread(self):
         self.logger.info(self.help_msg)
+        rate = Rate(30)
         while self.ok():
             key = get_key(0.1)
             if key == CTRL_PLUS_C:
@@ -61,13 +63,14 @@ class TeleopAgent(Agent):
                 break
             if key in self.bindings:
                 self.chassis.set_cmdvel(v=self.bindings[key][0], w=self.bindings[key][1])
+            rate.sleep()
 
     def camera_cb(self, image, metadata):
         self.image_grid.new_image(image)
 
 def main():
     teleop_agent = TeleopAgent()
-    my_agent.start()
+    teleop_agent.start()
 
 if __name__ == "__main__":
     main()

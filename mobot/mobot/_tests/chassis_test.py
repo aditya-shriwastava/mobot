@@ -23,6 +23,7 @@
 import threading
 from mobot.brain.agent import Agent
 from mobot.utils.terminal import get_key
+from mobot.utils.rate import Rate
 
 class ChassisTestAgent(Agent):
     def __init__(self):
@@ -52,6 +53,7 @@ class ChassisTestAgent(Agent):
 
     def control_thread(self):
         self.logger.info(self.help_msg)
+        rate = Rate(30)
         while self.ok():
             key = get_key(0.1)
             if key == '\x03': # Ctrl + c
@@ -59,6 +61,7 @@ class ChassisTestAgent(Agent):
                 break
             if key in self.bindings:
                 self.chassis.set_cmdvel(v=self.bindings[key][0], w=self.bindings[key][1])
+            rate.sleep()
 
 def main():
     chassis_test_agent = ChassisTestAgent()
