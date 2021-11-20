@@ -1,3 +1,3 @@
 > Turning Mobile Phone into Robot!
 
-Visit [mobotx.github.io](https://mobotx.github.io/) for know more.
+Visit [mobotx.github.io](https://mobotx.github.io/) to know more.
