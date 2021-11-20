@@ -1,3 +1,7 @@
+|                 Front                 |                  Bottom                  |                 Back                 |
+|:-------------------------------------:|:----------------------------------------:|:------------------------------------:|
+| ![front](../assets/chassis/front.png) |  ![bottom](../assets/chassis/bottom.png) |  ![back](../assets/chassis/back.png) |
+
 ## BOM
 |              Item               | Quantity |
 |:-------------------------------:|:--------:|
