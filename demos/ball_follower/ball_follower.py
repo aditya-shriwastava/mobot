@@ -18,15 +18,10 @@ class BallFollower(Agent):
         self.width = None
 
     def on_start(self):
-        self.logger.info("Waiting for chassis to be available...")
-        if self.chassis.wait_until_available():
-            self.logger.info("Chassis available!")
-            self.control_thread.start()
+        self.control_thread.start()
 
     def control_thread(self):
-        rate = Rate(10)
-        kp_lateral = 0.05
-        kp_longitudinal = 0.02
+        rate = Rate(20)
         while self.ok():
             if self.ball is not None:
                 center = self.width // 2
@@ -38,14 +33,31 @@ class BallFollower(Agent):
 
                 self.logger.info(f"lateral_error: {lateral_error}, longitudinal_error: {longitudinal_error}")
 
-                w = kp_lateral * lateral_error
-                v = kp_longitudinal * longitudinal_error
+                w = self.lateral_policy(lateral_error)
+                v = self.longitudinal_policy(longitudinal_error)
 
-                # self.chassis.set_cmdvel(v=v, w=w)
-
+                self.chassis.set_cmdvel(v=v, w=w)
             else:
-                self.chassis.set_cmdvel(w=0.0)
+                self.chassis.set_cmdvel(v=0.0, w=0.0)
             rate.sleep()
+
+    def lateral_policy(self, lateral_error):
+        if lateral_error > 100:
+            w = 0.5
+        elif lateral_error < -100:
+            w = -0.5
+        else:
+            w = 0
+        return w
+
+    def longitudinal_policy(self, longitudinal_error):
+        if longitudinal_error > 20:
+            v = 0.06
+        elif longitudinal_error < -20:
+            v = -0.06
+        else:
+            v = 0
+        return v
 
     def camera_cb(self, image, metadata):
         self.width = metadata.width
