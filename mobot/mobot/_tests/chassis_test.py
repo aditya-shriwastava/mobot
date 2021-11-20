@@ -24,7 +24,7 @@ import threading
 from mobot.brain.agent import Agent
 from mobot.utils.terminal import get_key
 
-class MyAgent(Agent):
+class ChassisTestAgent(Agent):
     def __init__(self):
         Agent.__init__(self)
         self.chassis.enable()
@@ -61,8 +61,8 @@ class MyAgent(Agent):
                 self.chassis.set_cmdvel(v=self.bindings[key][0], w=self.bindings[key][1])
 
 def main():
-    my_agent = MyAgent()
-    my_agent.start()
+    chassis_test_agent = ChassisTestAgent()
+    chassis_test_agent.start()
 
 if __name__ == "__main__":
     main()

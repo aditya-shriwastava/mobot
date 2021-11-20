@@ -24,7 +24,7 @@ import numpy as np
 from mobot.brain.agent import Agent
 from mobot.utils.image_grid import ImageGrid
 
-class MyAgent(Agent):
+class CameraTestAgent(Agent):
     def __init__(self):
         Agent.__init__(self)
         self.seq = 0
@@ -37,8 +37,8 @@ class MyAgent(Agent):
         self.image_grid.new_image(image)
 
 def main():
-    my_agent = MyAgent()
-    my_agent.start()
+    camera_test_agent = CameraTestAgent()
+    camera_test_agent.start()
 
 if __name__ == "__main__":
     main()

@@ -26,7 +26,7 @@ from mobot.brain.agent import Agent
 from mobot.utils.terminal import get_key, CTRL_PLUS_C
 from mobot.utils.image_grid import ImageGrid
 
-class MyAgent(Agent):
+class TeleopAgent(Agent):
     def __init__(self):
         Agent.__init__(self)
         self.chassis.enable()
@@ -66,7 +66,7 @@ class MyAgent(Agent):
         self.image_grid.new_image(image)
 
 def main():
-    my_agent = MyAgent()
+    teleop_agent = TeleopAgent()
     my_agent.start()
 
 if __name__ == "__main__":

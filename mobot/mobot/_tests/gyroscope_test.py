@@ -22,7 +22,7 @@
 
 from mobot.brain.agent import Agent
 
-class MyAgent(Agent):
+class GyroscopeTestAgent(Agent):
     def __init__(self):
         Agent.__init__(self)
         self.gyroscope.register_callback(self.gyroscope_cb)
@@ -34,8 +34,8 @@ class MyAgent(Agent):
         self.logger.info(f"wx: {wx}, wy: {wy}, wz: {wz}")
 
 def main():
-    my_agent = MyAgent()
-    my_agent.start()
+    gyroscope_test_agent = GyroscopeTestAgent()
+    gyroscope_testmy_agent.start()
 
 if __name__ == "__main__":
     main()
