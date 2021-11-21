@@ -35,7 +35,7 @@ class GyroscopeTestAgent(Agent):
 
 def main():
     gyroscope_test_agent = GyroscopeTestAgent()
-    gyroscope_testmy_agent.start()
+    gyroscope_test_agent.start()
 
 if __name__ == "__main__":
     main()
