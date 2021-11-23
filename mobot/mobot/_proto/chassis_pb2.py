@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'\n\020io.github.mobotxP\001',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\rchassis.proto\x12\x05mobot\"\x1e\n\x06\x43mdVel\x12\t\n\x01v\x18\x01 \x01(\x02\x12\t\n\x01w\x18\x02 \x01(\x02\"\x86\x01\n\x0f\x43hassisMetadata\x12\x17\n\x0f\x62ounding_radius\x18\x01 \x01(\x02\x12\x17\n\x0f\x62ounding_height\x18\x02 \x01(\x02\x12\x1f\n\x17noload_max_linear_speed\x18\x03 \x01(\x02\x12 \n\x18noload_max_angular_speed\x18\x04 \x01(\x02\x32H\n\x07\x43hassis\x12=\n\x10\x43hassisCmdStream\x12\x16.mobot.ChassisMetadata\x1a\r.mobot.CmdVel\"\x00\x30\x01\x42\x14\n\x10io.github.mobotxP\x01\x62\x06proto3'
+  serialized_pb=b'\n\rchassis.proto\x12\x05mobot\" \n\x06\x43mdVel\x12\n\n\x02wr\x18\x01 \x01(\x02\x12\n\n\x02wl\x18\x02 \x01(\x02\"~\n\x0f\x43hassisMetadata\x12\x16\n\x0ewheel_diameter\x18\x01 \x01(\x02\x12!\n\x19wheel_to_wheel_separation\x18\x02 \x01(\x02\x12\x17\n\x0fmax_wheel_speed\x18\x03 \x01(\x02\x12\x17\n\x0fmin_wheel_speed\x18\x04 \x01(\x02\x32H\n\x07\x43hassis\x12=\n\x10\x43hassisCmdStream\x12\x16.mobot.ChassisMetadata\x1a\r.mobot.CmdVel\"\x00\x30\x01\x42\x14\n\x10io.github.mobotxP\x01\x62\x06proto3'
 )
 
 
@@ -34,14 +34,14 @@ _CMDVEL = _descriptor.Descriptor(
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='v', full_name='mobot.CmdVel.v', index=0,
+      name='wr', full_name='mobot.CmdVel.wr', index=0,
       number=1, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='w', full_name='mobot.CmdVel.w', index=1,
+      name='wl', full_name='mobot.CmdVel.wl', index=1,
       number=2, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
@@ -60,7 +60,7 @@ _CMDVEL = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=24,
-  serialized_end=54,
+  serialized_end=56,
 )
 
 
@@ -73,28 +73,28 @@ _CHASSISMETADATA = _descriptor.Descriptor(
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='bounding_radius', full_name='mobot.ChassisMetadata.bounding_radius', index=0,
+      name='wheel_diameter', full_name='mobot.ChassisMetadata.wheel_diameter', index=0,
       number=1, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='bounding_height', full_name='mobot.ChassisMetadata.bounding_height', index=1,
+      name='wheel_to_wheel_separation', full_name='mobot.ChassisMetadata.wheel_to_wheel_separation', index=1,
       number=2, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='noload_max_linear_speed', full_name='mobot.ChassisMetadata.noload_max_linear_speed', index=2,
+      name='max_wheel_speed', full_name='mobot.ChassisMetadata.max_wheel_speed', index=2,
       number=3, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='noload_max_angular_speed', full_name='mobot.ChassisMetadata.noload_max_angular_speed', index=3,
+      name='min_wheel_speed', full_name='mobot.ChassisMetadata.min_wheel_speed', index=3,
       number=4, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
@@ -112,8 +112,8 @@ _CHASSISMETADATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=57,
-  serialized_end=191,
+  serialized_start=58,
+  serialized_end=184,
 )
 
 DESCRIPTOR.message_types_by_name['CmdVel'] = _CMDVEL
@@ -144,8 +144,8 @@ _CHASSIS = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=193,
-  serialized_end=265,
+  serialized_start=186,
+  serialized_end=258,
   methods=[
   _descriptor.MethodDescriptor(
     name='ChassisCmdStream',
