@@ -28,10 +28,10 @@ import mobot._proto.chassis_pb2_grpc as pb2_grpc
 class Chassis(pb2_grpc.ChassisServicer, Actuator):
     def __init__(self, logger, connection):
         Actuator.__init__(self, logger, connection)
-        self.bounding_radius = None
-        self.bounding_height = None
-        self.noload_max_linear_speed = None
-        self.noload_max_angular_speed = None
+        self.wheel_diameter = None
+        self.wheel_to_wheel_separation = None
+        self.max_wheel_speed = None
+        self.min_wheel_speed = None
 
     ## Private method (used for grpc communication)
     def ChassisCmdStream(self, chassis_metadata, context):
@@ -39,18 +39,24 @@ class Chassis(pb2_grpc.ChassisServicer, Actuator):
             yield cmd
 
     def _set_metadata(self, metadata):
-        self.bounding_radius = metadata.bounding_radius
-        self.bounding_height = metadata.bounding_height
-        self.noload_max_linear_speed = metadata.noload_max_linear_speed
-        self.noload_max_angular_speed = metadata.noload_max_angular_speed
+        self.wheel_diameter = metadata.wheel_diameter
+        self.wheel_to_wheel_separation = metadata.wheel_to_wheel_separation
+        self.max_wheel_speed = metadata.max_wheel_speed
+        self.min_wheel_speed = metadata.min_wheel_speed
 
     def _reset_metadata(self):
-        self.bounding_radius = None
-        self.bounding_height = None
-        self.noload_max_linear_speed = None
-        self.noload_max_angular_speed = None
+        self.wheel_diameter = None
+        self.wheel_to_wheel_separation = None
+        self.max_wheel_speed = None
+        self.min_wheel_speed = None
 
     def set_cmdvel(self, v=0.0, w=0.0, blocking=True):
         if self.available:
-            self._new_cmd(pb2.CmdVel(v=v, w=w), blocking=blocking)
+            wr, wl = self.__inverse_kinematics(v, w)
+            self._new_cmd(pb2.CmdVel(wr=wr, wl=wl), blocking=blocking)
         return self.available
+
+    def __inverse_kinematics(self, v, w):
+        wr = -(1/(self.wheel_diameter/2)) * (v + (w * (self.wheel_to_wheel_separation/2)))
+        wl = (1/(self.wheel_diameter/2)) * (v - (w * (self.wheel_to_wheel_separation/2)))
+        return wr, wl
