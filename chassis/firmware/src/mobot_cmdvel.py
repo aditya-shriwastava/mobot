@@ -19,8 +19,8 @@ class Mobot:
         self.js_r = JointState(self.er, E_RPT)
         self.js_l = JointState(self.el, E_RPT)
 
-        self.jc_r = JointControl(self.mr, self.js_r, KPR, KIR, WR_MIN, WR_MAX, GAMMA_R)
-        self.jc_l = JointControl(self.ml, self.js_l, KPL, KIL, WL_MIN, WL_MAX, GAMMA_L)
+        self.jc_r = JointControl(self.mr, self.js_r, KPR, KIR, W_MIN, W_MAX, GAMMA_R)
+        self.jc_l = JointControl(self.ml, self.js_l, KPL, KIL, W_MIN, W_MAX, GAMMA_L)
 
         self.diff_drive_state_estimator = DiffDriveStateEstimator(self.js_r, self.js_l, L, D,\
                                           state_estimate_hz=STATE_ESTIMATE_HZ,\
@@ -34,14 +34,24 @@ def main():
     while True:
         msg = input()
         try:
-            msg_split = msg.split(',')
-            v = float(msg_split[0])
-            w = float(msg_split[1])
+            msg_split = msg.split(':')
+            if msg_split[0] == "CMDVEL":
+                data = msg_split[1].split(',')
+                wr = float(data[0])
+                wl = float(data[1])
+                mobot.jc_r.set_target_w(wr)
+                mobot.jc_l.set_target_w(wl)
+            elif msg_split[0] == "GET":
+                if msg_split[1] == "Metadata":
+                    metadata_msg = "Metadata:" + str(D) + ","\
+                                               + str(L) + ","\
+                                               + str(W_MAX) + ","\
+                                               + str(W_MIN)
+                    print(metadata_msg)
         except:
             print("Msg received with invalid structure!")
             mobot.dled.blink(20)
             break
-        mobot.diff_drive_controller.set_target_velocity(v, w)
 
 if __name__ == "__main__":
     main()

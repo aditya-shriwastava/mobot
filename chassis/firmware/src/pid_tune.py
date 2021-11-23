@@ -12,25 +12,23 @@ motor = "Right"
 if motor == "Right":
     M_CHA = MR_CHA
     M_CHB = MR_CHB
-    MIN_OP = MIN_OPR
     E_CHA = ER_CHA
     E_CHB = ER_CHB
+
+    MIN_OP = MIN_OPR
+    GAMMA = GAMMA_R
     KP = KPR
     KI = KIR
-    W_MIN = WR_MIN
-    W_MAX = WR_MAX
-    GAMMA = GAMMA_R
 elif motor == "Left":
     M_CHA = ML_CHA
     M_CHB = ML_CHB
-    MIN_OP = MIN_OPL
     E_CHA = EL_CHA
     E_CHB = EL_CHB
+
+    MIN_OP = MIN_OPL
+    GAMMA = GAMMA_L
     KP = KPL
     KI = KIL
-    W_MIN = WL_MIN
-    W_MAX = WL_MAX
-    GAMMA = GAMMA_L
 
 class PidTune:
     def __init__(self):
