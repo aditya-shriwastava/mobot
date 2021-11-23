@@ -1,7 +1,7 @@
 import os
 
 proto_src = "../proto"
-proto_dist = "./src/mobot/_proto"
+proto_dist = "./mobot/_proto"
 
 protos = [file for file in os.listdir(proto_src) if file.split('.')[-1] == "proto"]
 
