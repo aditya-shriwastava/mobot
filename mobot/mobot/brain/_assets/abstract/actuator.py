@@ -41,8 +41,8 @@ class Actuator(Asset):
     def _actuator_cmd_stream(self, metadata, context):
         if self._is_body(context) and self.__enabled:
             self.__lock.acquire()
-            self.available = True
             self._set_metadata(metadata)
+            self.available = True
             is_available_thread = threading.Thread(target=self.__poll_is_available, args=(context,))
             is_available_thread.start()
             try:
