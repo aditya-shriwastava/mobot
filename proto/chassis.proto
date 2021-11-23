@@ -10,8 +10,8 @@ service Chassis{
 }
 
 message CmdVel{
-  float v = 1;
-  float w = 2;
+  float wr = 1;
+  float wl = 2;
 }
 
 message ChassisMetadata{
