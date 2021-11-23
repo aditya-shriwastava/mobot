@@ -22,7 +22,7 @@
 
 package io.github.mobotx.Mobot.AssetManager.Assets.Chassis
 
-class ChassisMetadata(val boundingRadius: Float,
-                      val boundingHeight:Float,
-                      val noloadMaxLinearSpeed:Float,
-                      val noloadMaxAngularSpeed: Float)
+class ChassisMetadata(val wheelDiameter: Float,
+                      val wheelToWheelSeparation:Float,
+                      val maxWheelSpeed:Float,
+                      val minWheelSpeed: Float)

@@ -62,17 +62,17 @@ class Chassis(private val activity: MainActivity) {
     private fun getCmdVelStream(){
         val chassisMetadata = chassisHI.getMetadata()
         val metadata = ChassisMetadata.newBuilder()
-                .setBoundingRadius(chassisMetadata.boundingRadius)
-                .setBoundingHeight(chassisMetadata.boundingHeight)
-                .setNoloadMaxLinearSpeed(chassisMetadata.noloadMaxLinearSpeed)
-                .setNoloadMaxAngularSpeed(chassisMetadata.noloadMaxAngularSpeed)
+                .setWheelDiameter(chassisMetadata.wheelDiameter)
+                .setWheelToWheelSeparation(chassisMetadata.wheelToWheelSeparation)
+                .setMaxWheelSpeed(chassisMetadata.maxWheelSpeed)
+                .setMinWheelSpeed(chassisMetadata.minWheelSpeed)
                 .build()
         try {
             val cmdVelIterator = stub.chassisCmdStream(metadata)
             cmdVelIterator.forEachRemaining{ cmdVel ->
                 if (chassisHI.available) {
 //                    debugView.appendMsg("v:${cmdVel.v}, w:${cmdVel.w} set!")
-                    chassisHI.setCmdVel(cmdVel.v, cmdVel.w)
+                    chassisHI.setCmdVel(cmdVel.wr, cmdVel.wl)
                 }
             }
         }catch (e: StatusRuntimeException){

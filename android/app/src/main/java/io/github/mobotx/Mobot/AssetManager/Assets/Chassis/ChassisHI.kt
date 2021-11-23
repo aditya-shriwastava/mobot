@@ -30,7 +30,6 @@ import android.content.IntentFilter
 import android.hardware.usb.UsbDevice
 import android.hardware.usb.UsbDeviceConnection
 import android.hardware.usb.UsbManager
-import androidx.appcompat.app.AppCompatActivity
 import com.felhr.usbserial.UsbSerialDevice
 import com.felhr.usbserial.UsbSerialInterface
 import io.github.mobotx.MainActivity
@@ -105,12 +104,42 @@ class ChassisHI(private val activity: MainActivity, private val chassis: Chassis
         usbSerialDevice?.close()
     }
 
-    fun setCmdVel(v: Float, w:Float){
-        val msg = "$v,$w\r"
+    fun setCmdVel(wr: Float, wl:Float){
+        val msg = "CMDVEL:$wr,$wl\r"
         usbSerialDevice?.write(msg.toByteArray())
     }
 
+    private fun readLine():String{
+        var line:String = ""
+        val byte:ByteArray = ByteArray(1)
+        while(true) {
+            val n = usbSerialDevice?.syncRead(byte, 0)
+            if(n == 1){
+                val ch = byte[0].toChar()
+                if(ch == '\r'){
+                    break
+                }else{
+                    line += ch
+                }
+            }
+        }
+        return line
+    }
+
+    // TODO: Add Timeout
     fun getMetadata():ChassisMetadata{
-        return ChassisMetadata(0.toFloat(), 0.toFloat(), 0.toFloat(), 0.toFloat())
+        usbSerialDevice?.write("GET:Metadata\r".toByteArray())
+        while(true){
+            val msg = readLine()
+            val msg_split = msg.split(':')
+            if(msg_split[0] == "METADATA"){
+                val data = msg_split[1].split(',')
+                val wheelDiameter = data[0].toFloat()
+                val wheelToWheelSeparation = data[1].toFloat()
+                val maxWheelSpeed = data[2].toFloat()
+                val minWheelSpeed = data[3].toFloat()
+                return ChassisMetadata(wheelDiameter, wheelToWheelSeparation, maxWheelSpeed, minWheelSpeed)
+            }
+        }
     }
 }
