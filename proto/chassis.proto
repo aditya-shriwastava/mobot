@@ -15,8 +15,8 @@ message CmdVel{
 }
 
 message ChassisMetadata{
-  float bounding_radius = 1;
-  float bounding_height = 2;
-  float noload_max_linear_speed = 3;
-  float noload_max_angular_speed = 4;
+  float wheel_diameter=1;
+  float wheel_to_wheel_separation=2;
+  float max_wheel_speed=3;
+  float min_wheel_speed=4;
 }
