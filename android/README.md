@@ -1,3 +1,3 @@
-<img src="./docs/app_details.png"
+<img src="./media/app_details.png"
      alt="App Details"
      width="636"/>

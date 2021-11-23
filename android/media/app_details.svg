@@ -16,7 +16,10 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   sodipodi:docname="app_details.svg">
+   sodipodi:docname="app_details.svg"
+   inkscape:export-filename="/home/aditya/Mobotx/mobot/android/media/app_details.png"
+   inkscape:export-xdpi="120"
+   inkscape:export-ydpi="120">
   <defs
      id="defs2">
     <marker
@@ -206,8 +209,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
-     inkscape:cx="515.03189"
-     inkscape:cy="898.46986"
+     inkscape:cx="145.97045"
+     inkscape:cy="709.52574"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -449,20 +452,20 @@
          style="stroke-width:0.23385024">Not Available</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88055556px;line-height:1.25;font-family:hindi;-inkscape-font-specification:hindi;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.23385024"
-       x="87.237236"
-       y="44.226261"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88055563px;line-height:1.25;font-family:hindi;-inkscape-font-specification:hindi;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.23385024"
+       x="88.907669"
+       y="44.159443"
        id="text4854"
        inkscape:export-xdpi="120"
        inkscape:export-ydpi="120"><tspan
          sodipodi:role="line"
          id="tspan4852"
-         x="87.237236"
-         y="44.226261"
+         x="88.907669"
+         y="44.159443"
          style="text-align:center;text-anchor:middle;stroke-width:0.23385024">Mobot Face</tspan><tspan
          sodipodi:role="line"
-         x="87.237236"
-         y="47.734016"
+         x="88.907669"
+         y="49.010136"
          style="text-align:center;text-anchor:middle;stroke-width:0.23385024"
          id="tspan5363">(Tap to Talk)</tspan></text>
     <path
@@ -483,5 +486,5 @@
            height="692.85712"
            x="-165.71428"
            y="-46.051743" /></flowRegion><flowPara
-         id="flowPara949"></flowPara></flowRoot>  </g>
+         id="flowPara949" /></flowRoot>  </g>
 </svg>
