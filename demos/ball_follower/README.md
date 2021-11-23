@@ -2,8 +2,8 @@
 > Robot should follow the ball.
 ## Steps
 1. Detect the ball in the image.
-  1. Location (i.e. Location of the center pixel)
-  2. Distance (can be obtained from size of the ball)
+    1. Location (i.e. Location of the center pixel)
+    2. Distance (can be obtained from size of the ball)
 2. Determine the longitudinal and lateral error wrt ideal ball pose.
 3. Set v and w of the robot based on the error.
 
