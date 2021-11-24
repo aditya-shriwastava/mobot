@@ -30,7 +30,6 @@ import io.grpc.StatusRuntimeException
 
 class Chassis(private val activity: MainActivity) {
     private val chassisView: ImageView = activity.findViewById<ImageView>(R.id.chassis)
-//    private val debugView = DebugView(activity)
 
     var connected: Boolean = false // STATE VARIABLE
 
@@ -60,22 +59,20 @@ class Chassis(private val activity: MainActivity) {
     }
 
     private fun getCmdVelStream(){
-        val chassisMetadata = chassisHI.getMetadata()
-        val metadata = ChassisMetadata.newBuilder()
-                .setWheelDiameter(chassisMetadata.wheelDiameter)
-                .setWheelToWheelSeparation(chassisMetadata.wheelToWheelSeparation)
-                .setMaxWheelSpeed(chassisMetadata.maxWheelSpeed)
-                .setMinWheelSpeed(chassisMetadata.minWheelSpeed)
-                .build()
         try {
+            val metadata = ChassisMetadata.newBuilder()
+                    .setWheelDiameter(chassisHI.metadata!!.wheelDiameter)
+                    .setWheelToWheelSeparation(chassisHI.metadata!!.wheelToWheelSeparation)
+                    .setMaxWheelSpeed(chassisHI.metadata!!.maxWheelSpeed)
+                    .setMinWheelSpeed(chassisHI.metadata!!.minWheelSpeed)
+                    .build()
             val cmdVelIterator = stub.chassisCmdStream(metadata)
             cmdVelIterator.forEachRemaining{ cmdVel ->
                 if (chassisHI.available) {
-//                    debugView.appendMsg("v:${cmdVel.v}, w:${cmdVel.w} set!")
                     chassisHI.setCmdVel(cmdVel.wr, cmdVel.wl)
                 }
             }
-        }catch (e: StatusRuntimeException){
+        }catch (e: Exception){
             if (chassisHI.available) {
                 chassisHI.setCmdVel(0.toFloat(), 0.toFloat())
             }

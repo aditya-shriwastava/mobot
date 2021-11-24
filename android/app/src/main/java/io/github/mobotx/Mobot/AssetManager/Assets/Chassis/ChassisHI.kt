@@ -30,18 +30,51 @@ import android.content.IntentFilter
 import android.hardware.usb.UsbDevice
 import android.hardware.usb.UsbDeviceConnection
 import android.hardware.usb.UsbManager
+import android.util.Log
 import com.felhr.usbserial.UsbSerialDevice
 import com.felhr.usbserial.UsbSerialInterface
 import io.github.mobotx.MainActivity
 
 class ChassisHI(private val activity: MainActivity, private val chassis: Chassis) {
     var available: Boolean = false // STATE VARIABLE
+    var metadata:ChassisMetadata? = null // STATE VARIABLE
 
     private var usbManager: UsbManager = activity.getSystemService(Context.USB_SERVICE) as UsbManager
     private var usbDevice: UsbDevice? = null
     private var usbSerialDevice: UsbSerialDevice? = null
     private var usbDeviceConnection: UsbDeviceConnection? = null
     private val ACTION_USB_PERMISSION = "permission"
+
+    class SerialReader(private val chassisHI: ChassisHI):UsbSerialInterface.UsbReadCallback{
+        private var readLine:String = ""
+        override fun onReceivedData(data: ByteArray?) {
+            val msgChunk = String(data!!)
+            for(ch in msgChunk){
+                if(ch == '\r'){
+                    parseLine()
+                    readLine = ""
+                }else if (ch != '\n'){
+                    readLine += ch
+                }
+            }
+        }
+        private fun parseLine(){
+            val readLineSplit = readLine.split(':')
+            if(readLineSplit[0] == "METADATA"){
+                val dataSplit = readLineSplit[1].split(',')
+                try {
+                    chassisHI.metadata = ChassisMetadata(
+                            dataSplit[0].toFloat(),
+                            dataSplit[1].toFloat(),
+                            dataSplit[2].toFloat(),
+                            dataSplit[3].toFloat())
+                }catch(e: Exception){
+                    Log.d("Mobot", "$e")
+                }
+            }
+        }
+    }
+    private var serialReader = SerialReader(this)
 
     private val broadcastReceiver = object : BroadcastReceiver(){
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -57,6 +90,8 @@ class ChassisHI(private val activity: MainActivity, private val chassis: Chassis
                             usbSerialDevice!!.setStopBits(UsbSerialInterface.STOP_BITS_1)
                             usbSerialDevice!!.setParity(UsbSerialInterface.PARITY_NONE)
                             usbSerialDevice!!.setFlowControl(UsbSerialInterface.FLOW_CONTROL_OFF)
+                            usbSerialDevice?.read(serialReader)
+                            usbSerialDevice?.write("GET:Metadata\r".toByteArray())
                         }
                     }
                 }
@@ -100,6 +135,7 @@ class ChassisHI(private val activity: MainActivity, private val chassis: Chassis
 
     private fun disconnect() {
         available = false
+        metadata = null
         chassis.chassisHIUnavailable()
         usbSerialDevice?.close()
     }
@@ -107,39 +143,5 @@ class ChassisHI(private val activity: MainActivity, private val chassis: Chassis
     fun setCmdVel(wr: Float, wl:Float){
         val msg = "CMDVEL:$wr,$wl\r"
         usbSerialDevice?.write(msg.toByteArray())
-    }
-
-    private fun readLine():String{
-        var line:String = ""
-        val byte:ByteArray = ByteArray(1)
-        while(true) {
-            val n = usbSerialDevice?.syncRead(byte, 0)
-            if(n == 1){
-                val ch = byte[0].toChar()
-                if(ch == '\r'){
-                    break
-                }else{
-                    line += ch
-                }
-            }
-        }
-        return line
-    }
-
-    // TODO: Add Timeout
-    fun getMetadata():ChassisMetadata{
-        usbSerialDevice?.write("GET:Metadata\r".toByteArray())
-        while(true){
-            val msg = readLine()
-            val msg_split = msg.split(':')
-            if(msg_split[0] == "METADATA"){
-                val data = msg_split[1].split(',')
-                val wheelDiameter = data[0].toFloat()
-                val wheelToWheelSeparation = data[1].toFloat()
-                val maxWheelSpeed = data[2].toFloat()
-                val minWheelSpeed = data[3].toFloat()
-                return ChassisMetadata(wheelDiameter, wheelToWheelSeparation, maxWheelSpeed, minWheelSpeed)
-            }
-        }
     }
 }
