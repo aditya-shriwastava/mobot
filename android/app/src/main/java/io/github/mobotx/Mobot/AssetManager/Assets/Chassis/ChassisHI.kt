@@ -35,7 +35,7 @@ import com.felhr.usbserial.UsbSerialDevice
 import com.felhr.usbserial.UsbSerialInterface
 import io.github.mobotx.MainActivity
 
-class ChassisHI(private val activity: MainActivity, private val chassis: Chassis) {
+class ChassisHI(private val activity: MainActivity, val chassis: Chassis) {
     var available: Boolean = false // STATE VARIABLE
     var metadata:ChassisMetadata? = null // STATE VARIABLE
 
@@ -68,6 +68,8 @@ class ChassisHI(private val activity: MainActivity, private val chassis: Chassis
                             dataSplit[1].toFloat(),
                             dataSplit[2].toFloat(),
                             dataSplit[3].toFloat())
+                    chassisHI.available = true
+                    chassisHI.chassis.chassisHIAvailable()
                 }catch(e: Exception){
                     Log.d("Mobot", "$e")
                 }
@@ -115,10 +117,11 @@ class ChassisHI(private val activity: MainActivity, private val chassis: Chassis
     }
 
     private fun startUsbConnecting() {
+        var found = false
         val usbDevices = usbManager.deviceList
         if (!usbDevices?.isEmpty()!!) {
             usbDevices.forEach { _, dev ->
-                if (!available) {
+                if (!found) {
                     val deviceVendorId: Int? = dev?.vendorId
                     val productId: Int? = dev?.productId
                     val serialNumber = dev?.serialNumber
@@ -126,7 +129,7 @@ class ChassisHI(private val activity: MainActivity, private val chassis: Chassis
                         usbDevice = dev
                         val intent: PendingIntent = PendingIntent.getBroadcast(activity, 0, Intent(ACTION_USB_PERMISSION), 0)
                         usbManager.requestPermission(usbDevice, intent)
-                        available = true
+                        found = true
                     }
                 }
             }

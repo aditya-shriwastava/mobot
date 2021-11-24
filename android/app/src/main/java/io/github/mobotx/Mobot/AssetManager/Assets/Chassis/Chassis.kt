@@ -85,7 +85,11 @@ class Chassis(private val activity: MainActivity) {
         refreshUI()
     }
 
-    private fun refreshUI(){
+    fun chassisHIAvailable(){
+        refreshUI()
+    }
+
+    fun refreshUI(){
         activity.runOnUiThread {
             if (chassisHI.available){
                 chassisView.setImageResource(R.drawable.chassis_not_streaming)
