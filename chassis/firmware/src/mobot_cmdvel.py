@@ -43,7 +43,7 @@ def main():
                 mobot.jc_l.set_target_w(wl)
             elif msg_split[0] == "GET":
                 if msg_split[1] == "Metadata":
-                    metadata_msg = "Metadata:" + str(D) + ","\
+                    metadata_msg = "METADATA:" + str(D) + ","\
                                                + str(L) + ","\
                                                + str(W_MAX) + ","\
                                                + str(W_MIN)
