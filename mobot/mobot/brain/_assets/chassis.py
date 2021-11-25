@@ -50,6 +50,11 @@ class Chassis(pb2_grpc.ChassisServicer, Actuator):
         self.max_wheel_speed = None
         self.min_wheel_speed = None
 
+    def set_wheel_velocity(self, wr=0.0, wl=0.0, blocking=True):
+        if self.available:
+            self._new_cmd(pb2.CmdVel(wr=wr, wl=wl), blocking=blocking)
+        return self.available
+
     def set_cmdvel(self, v=0.0, w=0.0, blocking=True):
         if self.available:
             wr, wl = self.__inverse_kinematics(v, w)
