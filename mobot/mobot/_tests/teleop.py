@@ -21,11 +21,10 @@
 # SOFTWARE.
 
 import threading
-import argparse
+import numpy as np
 
 from mobot.brain.agent import Agent
 from mobot.utils.terminal import get_key, CTRL_PLUS_C
-# from mobot.utils.image_grid import ImageGrid
 from mobot.utils.rate import Rate
 from mobot.utils.joystick import Joystick
 
@@ -38,50 +37,53 @@ class Ui:
     def setupUi(self, main_window):
         main_window.setWindowTitle("Joystick")
         central_widget = QWidget()
-        grid_layout = QGridLayout()
-        central_widget.setLayout(grid_layout)
-        main_window.setCentralWidget(central_widget)
+        layout = QVBoxLayout()
+        layout.setAlignment(Qt.AlignCenter)
+
+        self.image = QLabel()
+        self.flashlight = QCheckBox("Flashlight")
+        self.flashlight.setChecked(False)
         self.joystick = Joystick()
-        grid_layout.addWidget(self.joystick,0,0)
+
+        layout.addWidget(self.image)
+        layout.addWidget(self.flashlight)
+        layout.addWidget(self.joystick)
+        central_widget.setLayout(layout)
+        main_window.setCentralWidget(central_widget)
 
 class TeleopAgent(Agent):
-    def __init__(self, joystick=None):
+    def __init__(self, ui):
         Agent.__init__(self)
-        self.joystick = joystick
+        self.ui = ui
+        self.camera.register_callback(self.camera_cb)
+        self.flashlight.enable()
         self.chassis.enable()
-        if self.joystick is None:
-            self.control_thread = threading.Thread(target=self.keyboard_teleop_thread)
-        else:
-            self.control_thread = threading.Thread(target=self.joystick_teleop_thread)
-            self.joystick.pose.connect(self.joystick_cb)
-            self.v = 0.0
-            self.w = 0.0
+        self.keyboard_teleop_thread = threading.Thread(target=self.keyboard_teleop_thread)
+        self.control_thread = threading.Thread(target=self.control_thread)
 
-        # self.camera.register_callback(self.camera_cb)
-        # self.image_grid = ImageGrid(self)
+        self.cmd_v = 0.0
+        self.cmd_w = 0.0
 
     def on_start(self):
+        self.keyboard_teleop_thread.start()
         self.control_thread.start()
+        self.ui.flashlight.toggled.connect(self.flashlight_cb)
+        self.ui.joystick.pose.connect(self.joystick_cb)
 
-    # TODO: Implement mapping (x,y) --> (v,w)
+    def flashlight_cb(self):
+        self.flashlight.toggle()
+
     def joystick_cb(self, x, y):
         wmax = (self.chassis.wheel_diameter * self.chassis.max_wheel_speed)/self.chassis.wheel_to_wheel_separation
         vmax = (self.chassis.wheel_diameter * self.chassis.max_wheel_speed)/2
-        self.v = -(y/100) * vmax
-        self.w = -(x/100) * wmax
-        # print(f"v: {v}, w: {w}")
-
-    def joystick_teleop_thread(self):
-        rate = Rate(30)
-        while self.ok():
-            self.chassis.set_cmdvel(v=self.v, w=self.w)
-            rate.sleep()
+        self.cmd_v = -(y/100) * vmax
+        self.cmd_w = -(x/100) * wmax
 
     def keyboard_teleop_thread(self):
-        self.bindings = {'w':( 0.07,  0.0),\
-                         'a':( 0.0,  0.5),\
-                         's':(-0.07,  0.0),\
-                         'd':( 0.0, -0.5),\
+        self.bindings = {'w':( 0.06,  0.0),\
+                         'a':( 0.0,  0.4),\
+                         's':(-0.06,  0.0),\
+                         'd':( 0.0, -0.4),\
                          ' ':( 0.0,  0.0)}
         self.help_msg = """
         Moving around:
@@ -92,38 +94,42 @@ class TeleopAgent(Agent):
         CTRL-C to quit
         """
         self.logger.info(self.help_msg)
-        rate = Rate(30)
+        rate = Rate(50)
         while self.ok():
             key = get_key(0.1)
-            if key == CTRL_PLUS_C:
-                self.terminate()
-                break
             if key in self.bindings:
-                self.chassis.set_cmdvel(v=self.bindings[key][0], w=self.bindings[key][1])
+                self.cmd_v=self.bindings[key][0]
+                self.cmd_w=self.bindings[key][1]
+            rate.sleep()
+        print() ## Temp Fix for indentation in terminal
+
+    def control_thread(self):
+        rate = Rate(30)
+        while self.ok():
+            self.chassis.set_cmdvel(v=self.cmd_v, w=self.cmd_w)
             rate.sleep()
 
-    # def camera_cb(self, image, metadata):
-    #     self.image_grid.new_image(image)
+    def camera_cb(self, image, metadata):
+        qImg = QImage(np.require(image, np.uint8, 'C'),
+                metadata.width,
+                metadata.height,
+                QImage.Format_RGB888)
+
+        pixmap = QPixmap(qImg)
+        pixmap = pixmap.scaled(400,400, Qt.KeepAspectRatio)
+        self.ui.image.setPixmap(pixmap)
 
 def main():
-    parser = argparse.ArgumentParser(description="Teleopration of Mobot")
-    parser.add_argument('--joystick', action='store_true', help='Use joystick')
-    args = parser.parse_args()
-
-    if args.joystick:
-        app = QApplication([])
-        app.setStyle(QStyleFactory.create("Cleanlooks"))
-        main_window = QMainWindow()
-        ui = Ui()
-        ui.setupUi(main_window)
-        teleop_agent = TeleopAgent(joystick=ui.joystick)
-        main_window.show()
-        teleop_agent.start()
-        if not app.exec():
-            teleop_agent.terminate()
-    else:
-        teleop_agent = TeleopAgent()
-        teleop_agent.start()
+    app = QApplication([])
+    app.setStyle(QStyleFactory.create("Cleanlooks"))
+    main_window = QMainWindow()
+    ui = Ui()
+    ui.setupUi(main_window)
+    teleop_agent = TeleopAgent(ui)
+    main_window.show()
+    teleop_agent.start()
+    if not app.exec():
+        teleop_agent.terminate()
 
 if __name__ == "__main__":
     main()
