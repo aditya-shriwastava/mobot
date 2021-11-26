@@ -22,7 +22,7 @@
 
 import numpy as np
 from io import BytesIO
-import matplotlib.image as mpimg
+from PIL import Image
 
 from .abstract.sensor import Sensor
 
@@ -41,6 +41,6 @@ class Camera(pb2_grpc.CameraServicer, Sensor):
         return self._new_sensor_data(compressed_image, context)
 
     def _format_data(self, compressed_image):
-        image = np.array(mpimg.imread(BytesIO(compressed_image.data), format="jpg"))
+        image = np.array(Image.open(BytesIO(compressed_image.data)))
         image = np.rot90(image, k=3)
         return image
