@@ -27,6 +27,12 @@ import cv2
 def _do_nothing(x):
     pass
 
+'''
+- Simple wrapper around cv2 high level gui
+- Features:
+    1. Grid of images of fixed size.
+    2. Trackbars
+'''
 class ImageGrid:
     def __init__(self, agent, name="Image Grid", size=(1,1), image_size=(640,480,3)):
         self.__agent = agent
