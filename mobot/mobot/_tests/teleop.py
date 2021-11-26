@@ -35,7 +35,7 @@ import sys
 
 class Ui:
     def setupUi(self, main_window):
-        main_window.setWindowTitle("Joystick")
+        main_window.setWindowTitle("Dashboard")
         central_widget = QWidget()
         layout = QVBoxLayout()
         layout.setAlignment(Qt.AlignCenter)
