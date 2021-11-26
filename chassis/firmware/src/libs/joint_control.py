@@ -26,8 +26,8 @@ class JointControl:
     def set_target_w(self, w): ## Public
         if is_within(w, self.target_w_max):
             self.target_w = w
-            if is_within(w, self.target_w_min):
-                self.target_w = 0
+            # if is_within(w, self.target_w_min):
+            #     self.target_w = 0
         else:
             self.target_w = (w / abs(w)) * self.target_w_max
 
