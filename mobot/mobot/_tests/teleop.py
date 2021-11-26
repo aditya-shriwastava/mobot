@@ -31,25 +31,6 @@ from mobot.utils.joystick import Joystick
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
-import sys
-
-class Ui:
-    def setupUi(self, main_window):
-        main_window.setWindowTitle("Dashboard")
-        central_widget = QWidget()
-        layout = QVBoxLayout()
-        layout.setAlignment(Qt.AlignCenter)
-
-        self.image = QLabel()
-        self.flashlight = QCheckBox("Flashlight")
-        self.flashlight.setChecked(False)
-        self.joystick = Joystick()
-
-        layout.addWidget(self.image)
-        layout.addWidget(self.flashlight)
-        layout.addWidget(self.joystick)
-        central_widget.setLayout(layout)
-        main_window.setCentralWidget(central_widget)
 
 class TeleopAgent(Agent):
     def __init__(self, ui):
@@ -110,14 +91,35 @@ class TeleopAgent(Agent):
             rate.sleep()
 
     def camera_cb(self, image, metadata):
+        self.ui.set_image(image)
+
+class Ui:
+    def setupUi(self, main_window):
+        main_window.setWindowTitle("Dashboard")
+        central_widget = QWidget()
+        layout = QVBoxLayout()
+        layout.setAlignment(Qt.AlignCenter)
+
+        self.image = QLabel()
+        self.flashlight = QCheckBox("Flashlight")
+        self.flashlight.setChecked(False)
+        self.joystick = Joystick()
+
+        layout.addWidget(self.image)
+        layout.addWidget(self.flashlight)
+        layout.addWidget(self.joystick)
+        central_widget.setLayout(layout)
+        main_window.setCentralWidget(central_widget)
+
+    def set_image(self, image):
+        H, W, C = image.shape
         qImg = QImage(np.require(image, np.uint8, 'C'),
-                metadata.width,
-                metadata.height,
+                W, H,
                 QImage.Format_RGB888)
 
         pixmap = QPixmap(qImg)
         pixmap = pixmap.scaled(400,400, Qt.KeepAspectRatio)
-        self.ui.image.setPixmap(pixmap)
+        self.image.setPixmap(pixmap)
 
 def main():
     app = QApplication([])
