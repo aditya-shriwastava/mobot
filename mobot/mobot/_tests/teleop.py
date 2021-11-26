@@ -61,10 +61,10 @@ class TeleopAgent(Agent):
         self.cmd_w = -(x/100) * wmax
 
     def keyboard_teleop_thread(self):
-        self.bindings = {'w':( 0.06,  0.0),\
-                         'a':( 0.0,  0.4),\
-                         's':(-0.06,  0.0),\
-                         'd':( 0.0, -0.4),\
+        self.bindings = {'w':( 0.07,  0.0),\
+                         'a':( 0.0,  0.5),\
+                         's':(-0.07,  0.0),\
+                         'd':( 0.0, -0.5),\
                          ' ':( 0.0,  0.0)}
         self.help_msg = """
         Moving around:
@@ -85,7 +85,7 @@ class TeleopAgent(Agent):
         print() ## Temp Fix for indentation in terminal
 
     def control_thread(self):
-        rate = Rate(30)
+        rate = Rate(10)
         while self.ok():
             self.chassis.set_cmdvel(v=self.cmd_v, w=self.cmd_w)
             rate.sleep()
