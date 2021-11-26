@@ -21,21 +21,63 @@
 # SOFTWARE.
 
 import threading
+import argparse
 
 from mobot.brain.agent import Agent
 from mobot.utils.terminal import get_key, CTRL_PLUS_C
-from mobot.utils.image_grid import ImageGrid
+# from mobot.utils.image_grid import ImageGrid
 from mobot.utils.rate import Rate
+from mobot.utils.joystick import Joystick
+
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
+import sys
+
+class Ui:
+    def setupUi(self, main_window):
+        main_window.setWindowTitle("Joystick")
+        central_widget = QWidget()
+        grid_layout = QGridLayout()
+        central_widget.setLayout(grid_layout)
+        main_window.setCentralWidget(central_widget)
+        self.joystick = Joystick()
+        grid_layout.addWidget(self.joystick,0,0)
 
 class TeleopAgent(Agent):
-    def __init__(self):
+    def __init__(self, joystick=None):
         Agent.__init__(self)
+        self.joystick = joystick
         self.chassis.enable()
-        self.control_thread = threading.Thread(target=self.control_thread)
+        if self.joystick is None:
+            self.control_thread = threading.Thread(target=self.keyboard_teleop_thread)
+        else:
+            self.control_thread = threading.Thread(target=self.joystick_teleop_thread)
+            self.joystick.pose.connect(self.joystick_cb)
+            self.v = 0.0
+            self.w = 0.0
 
-        self.camera.register_callback(self.camera_cb)
-        self.image_grid = ImageGrid(self)
+        # self.camera.register_callback(self.camera_cb)
+        # self.image_grid = ImageGrid(self)
 
+    def on_start(self):
+        self.control_thread.start()
+
+    # TODO: Implement mapping (x,y) --> (v,w)
+    def joystick_cb(self, x, y):
+        wmax = (self.chassis.wheel_diameter * self.chassis.max_wheel_speed)/self.chassis.wheel_to_wheel_separation
+        vmax = (self.chassis.wheel_diameter * self.chassis.max_wheel_speed)/2
+        self.v = -(y/100) * vmax
+        self.w = -(x/100) * wmax
+        # print(f"v: {v}, w: {w}")
+
+    def joystick_teleop_thread(self):
+        rate = Rate(30)
+        while self.ok():
+            self.chassis.set_cmdvel(v=self.v, w=self.w)
+            rate.sleep()
+
+    def keyboard_teleop_thread(self):
         self.bindings = {'w':( 0.07,  0.0),\
                          'a':( 0.0,  0.5),\
                          's':(-0.07,  0.0),\
@@ -49,11 +91,6 @@ class TeleopAgent(Agent):
         Spacebar to Stop!
         CTRL-C to quit
         """
-
-    def on_start(self):
-        self.control_thread.start()
-
-    def control_thread(self):
         self.logger.info(self.help_msg)
         rate = Rate(30)
         while self.ok():
@@ -65,12 +102,28 @@ class TeleopAgent(Agent):
                 self.chassis.set_cmdvel(v=self.bindings[key][0], w=self.bindings[key][1])
             rate.sleep()
 
-    def camera_cb(self, image, metadata):
-        self.image_grid.new_image(image)
+    # def camera_cb(self, image, metadata):
+    #     self.image_grid.new_image(image)
 
 def main():
-    teleop_agent = TeleopAgent()
-    teleop_agent.start()
+    parser = argparse.ArgumentParser(description="Teleopration of Mobot")
+    parser.add_argument('--joystick', action='store_true', help='Use joystick')
+    args = parser.parse_args()
+
+    if args.joystick:
+        app = QApplication([])
+        app.setStyle(QStyleFactory.create("Cleanlooks"))
+        main_window = QMainWindow()
+        ui = Ui()
+        ui.setupUi(main_window)
+        teleop_agent = TeleopAgent(joystick=ui.joystick)
+        main_window.show()
+        teleop_agent.start()
+        if not app.exec():
+            teleop_agent.terminate()
+    else:
+        teleop_agent = TeleopAgent()
+        teleop_agent.start()
 
 if __name__ == "__main__":
     main()
