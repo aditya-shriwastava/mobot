@@ -4,6 +4,7 @@ import serial
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from ui_pid_tune import Ui_pid_tune
+from mobot.utils.rate import Rate
 
 class PIDTune(Ui_pid_tune):
     def __init__(self):
@@ -13,6 +14,9 @@ class PIDTune(Ui_pid_tune):
                                    timeout=1)
         self.init_thread = threading.Thread(target=self.init_thread)
         self.w_present_thread = threading.Thread(target=self.w_present_thread)
+        self.w_cmd_thread = threading.Thread(target=self.w_cmd_thread)
+
+        self.active = True
 
         self.p_min = 0.0
         self.p_max = 1.0
@@ -36,6 +40,7 @@ class PIDTune(Ui_pid_tune):
         self.stop_button.clicked.connect(self.on_stop)
         self.init_thread.start()
         self.w_present_thread.start()
+        self.w_cmd_thread.start()
 
     def init_thread(self):
         self.wait_until_visible()
@@ -80,7 +85,13 @@ class PIDTune(Ui_pid_tune):
     def on_w_slider_change(self):
         value = self.w_slider.value() / (2000/(self.w_max-self.w_min))
         self.w_value.setText(str(value))
-        self.mobot.write(bytes(f"WCMD:{value}\r", 'utf-8'))
+
+    def w_cmd_thread(self):
+        rate = Rate(10)
+        while self.active:
+            value = self.w_slider.value() / (2000/(self.w_max-self.w_min))
+            self.mobot.write(bytes(f"WCMD:{value}\r", 'utf-8'))
+            rate.sleep()
 
     def on_stop(self):
         self.w_slider.setValue(0)
@@ -95,4 +106,6 @@ if __name__ == "__main__":
         sys.exit()
     pid_tune.setupUi(pid_tune_window)
     pid_tune_window.show()
-    sys.exit(app.exec_())
+    if not app.exec_():
+        pid_tune.active = False
+        sys.exit()
