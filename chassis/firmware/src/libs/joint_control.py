@@ -40,14 +40,15 @@ class JointControl:
     def update_error_int(self, error, dt):
         if self.target_w == 0:
             self.error_int = 0
-            return
-        if is_within(self.error_int , self.error_int_max):
-            gamma = 1
-            if is_within(self.error_int , self.error_int_max * self.motor.min_op):
-                gamma = self.gamma
+            return 
+
+        if is_within(self.error_int, self.error_int_max * self.motor.min_op):
+            self.error_int += 5 * error * dt
+        elif is_within(self.error_int, self.error_int_max):
+            self.error_int += error * dt
         else:
-            gamma = 0
-        self.error_int += gamma * error * dt
+            if abs(self.error_int + (error * dt)) < abs(self.error_int):
+                self.error_int += error * dt
 
     def update_cb(self, timer):
         self.update(self.dt)
