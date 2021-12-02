@@ -35,9 +35,7 @@ class Mobot(private val activity: MainActivity) {
     init { // Setup Communication wiring
         connection.setAssetManagerHdl(assetManager)
 
-        face.setAssetManagerHdl(assetManager)
         face.setConnectionHdl(connection)
-
         face.start()
     }
 

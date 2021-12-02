@@ -36,10 +36,8 @@ class Face(private val activity: AppCompatActivity) {
 
     private var lost = false
     private var connected = false
-    private var chassisAvailable = false
 
     private lateinit var connection: Connection
-    private lateinit var assetManager: AssetManager
 
     private val face_hz = activity.getString(R.string.face_hz).toDouble()
 
@@ -57,7 +55,6 @@ class Face(private val activity: AppCompatActivity) {
                     lost = false
                     if (connection.connectionState == Connection.ConnectionState.CONNECTED){
                         connected = true
-                        chassisAvailable = assetManager.chassis.chassisHI.available
                     }else{
                         connected = false
                     }
@@ -75,23 +72,14 @@ class Face(private val activity: AppCompatActivity) {
                 faceTextView.text = activity.getString(R.string.face_text_lost)
             }else {
                 if (connected) {
-                    if (chassisAvailable) {
-                        faceView.setImageResource(R.drawable.mobot_happy)
-                        faceTextView.text = activity.getString(R.string.face_text_happy)
-                    } else {
-                        faceView.setImageResource(R.drawable.mobot_awake)
-                        faceTextView.text = activity.getString(R.string.face_text_awake)
-                    }
+                    faceView.setImageResource(R.drawable.mobot_happy)
+                    faceTextView.text = activity.getString(R.string.face_text_happy)
                 } else {
                     faceView.setImageResource(R.drawable.mobot_sleepy)
                     faceTextView.text = activity.getString(R.string.face_text_asleep)
                 }
             }
         }
-    }
-
-    fun setAssetManagerHdl(assetManager: AssetManager){
-        this.assetManager = assetManager
     }
 
     fun setConnectionHdl(connection: Connection){
