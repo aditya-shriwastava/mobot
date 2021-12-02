@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onInfoButtonClick(view: View){
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.mobot_website)))
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.mobot_docs)))
         startActivity(intent)
     }
 }
