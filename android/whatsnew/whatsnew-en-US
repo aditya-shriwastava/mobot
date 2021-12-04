@@ -1,0 +1,2 @@
+1. Moved from robot velocity interface (i.e. v, w) to robot wheel velocity interface (i.e. wr, wl) for chassis.
+2. Removed mobot_awake face.
