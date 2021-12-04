@@ -1,0 +1,38 @@
+name: Publish Mobot App to Playstore
+on:
+  release:
+    types: [published]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      
+      - name: Change pwd to android
+        run: cd android
+
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
+
+      - name: Build Project
+        run: ./gradlew build
+
+      - name: Build Release Bundle
+        run: ./gradlew bundleRelease
+
+      - name: Sign Bundle
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: app/build/outputs/bundle/release
+          signingKeyBase64: ${{ secrets.ANDROID_SIGN_KEY }}
+          alias: key0
+          keyStorePassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
+
+      - name: Publish to Play Store
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{secrets.PUBLISH_MOBOT_APP_SERVICE_ACCOUNT}}
+          packageName: io.github.mobotx
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          whatsNewDirectory: whatsnew
