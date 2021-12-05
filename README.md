@@ -1,5 +1,7 @@
 ![Mobot Banner](./assets/banners/mobot_banner.png)
 
+[![Test mobot python package](https://github.com/mobotx/mobot/actions/workflows/test.yml/badge.svg)](https://github.com/mobotx/mobot/actions/workflows/test.yml)
+
 # What is Mobot?
 
 Currently, robots are either expensive or make significant compromises on its capabilities.
