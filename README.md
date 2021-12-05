@@ -15,7 +15,7 @@ Mobot is a mobile robot that leverages the capabilities of mobile phone and lapt
 
 # To get started you need 3 things
 
-1. Chassis for mobot ([DIY](./chassis)).
+1. [Chassis for mobot.](./chassis)
 2. Mobile phone with mobot app installed.<br/>
 <a href='https://play.google.com/store/apps/details?id=io.github.mobotx&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width=200></a>
 3. Laptop with mobot python package installed.<br>
