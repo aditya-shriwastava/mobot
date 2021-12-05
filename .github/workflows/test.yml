@@ -12,7 +12,7 @@ jobs:
         python-version: '3.x'
     
     - name: Change pwd to mobot
-      run: cd mobot
+      run: cd mobot/mobot
       
     - name: x
       run: ls
