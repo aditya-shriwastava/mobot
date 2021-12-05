@@ -3,14 +3,14 @@ on:
   release:
     types: [published]
 jobs:
-  build:
+  publisg:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./android
     steps:
       - uses: actions/checkout@v1
       
-      - name: Change pwd to android
-        run: cd android
-
       - name: Change wrapper permissions
         run: chmod +x ./gradlew
 
