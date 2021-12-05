@@ -14,6 +14,8 @@ Mobot is a mobile robot that leverages capabilities of mobile phone and laptop w
 # To get started
 
 1. Get a chassis for mobot ([Do It Yourself](./chassis)).
-2. Install Mobot app on your mobile phone from [Playstore](https://play.google.com/store/apps/details?id=io.github.mobotx) (Or [Build from source](./android)).
-3. Install Mobot python package on your laptop from [PyPI](https://pypi.org/project/mobot/) (or [Build from source](./mobot)).
+2. Install Mobot app on your mobile phone.<br/>
+<a href='https://play.google.com/store/apps/details?id=io.github.mobotx&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width=200></a>
+3. Install Mobot python package on your laptop.<br>
+<a href="https://badge.fury.io/py/mobot"><img src="https://badge.fury.io/py/mobot.svg" alt="PyPI version" width=150></a>
 4. Now you are good to go. Follow the [tutorial here](https://github.com/mobotx/mobot/wiki) to start programming your mobot!.
