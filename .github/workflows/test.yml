@@ -3,6 +3,9 @@ on: push
 jobs:
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./mobot
     steps:
     - uses: actions/checkout@v2
     
@@ -10,12 +13,6 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.x'
-    
-    - name: Change pwd to mobot
-      run: cd mobot/mobot
-      
-    - name: x
-      run: ls
 
     - name: Install mobot package
       run: pip3 install .
