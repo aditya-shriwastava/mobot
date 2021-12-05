@@ -23,4 +23,4 @@ Mobot is a mobile robot that leverages the capabilities of mobile phone and lapt
 
 Now you are good to go!
 
-Follow the [Quick Start Guide](https://github.com/mobotx/mobot/wiki) to start programming your mobot!.
+Follow the [Quick Start Guide](https://github.com/mobotx/mobot/wiki) to get started.
