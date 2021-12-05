@@ -13,6 +13,9 @@ jobs:
     
     - name: Change pwd to mobot
       run: cd mobot
+
+    - name: Install mobot package
+      run: pip3 install .
     
     - name: Run Tests
-      run: python -m unittest
+      run: python -m unittest discover
