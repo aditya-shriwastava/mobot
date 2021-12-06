@@ -31,7 +31,7 @@ class Chassis(pb2_grpc.ChassisServicer, Actuator):
     def __init__(self, logger, connection):
         Actuator.__init__(self, logger, connection)
         self.WHEEL_DIAMETER = None
-        self.WHEEL_TO_WHEEL_SEPERATION  = None
+        self.WHEEL_TO_WHEEL_SEPARATION  = None
         self.MAX_WHEEL_SPEED = None
         self.MIN_WHEEL_SPEED = None
 
@@ -41,14 +41,14 @@ class Chassis(pb2_grpc.ChassisServicer, Actuator):
             yield cmd
 
     def _set_metadata(self, metadata):
-        self.WHEEL_DIAMETER = metadata.WHEEL_DIAMETER
-        self.WHEEL_TO_WHEEL_SEPERATION = metadata.WHEEL_TO_WHEEL_SEPERATION
-        self.MAX_WHEEL_SPEED = metadata.MAX_WHEEL_SPEED
-        self.MIN_WHEEL_SPEED = metadata.MIN_WHEEL_SPEED
+        self.WHEEL_DIAMETER = metadata.wheel_diameter
+        self.WHEEL_TO_WHEEL_SEPARATION = metadata.wheel_to_wheel_separation
+        self.MAX_WHEEL_SPEED = metadata.max_wheel_speed
+        self.MIN_WHEEL_SPEED = metadata.min_wheel_speed
 
     def _reset_metadata(self):
         self.WHEEL_DIAMETER = None
-        self.WHEEL_TO_WHEEL_SEPERATION = None
+        self.WHEEL_TO_WHEEL_SEPARATION = None
         self.MAX_WHEEL_SPEED = None
         self.MIN_WHEEL_SPEED = None
 
@@ -64,6 +64,6 @@ class Chassis(pb2_grpc.ChassisServicer, Actuator):
         return self.available
 
     def __inverse_kinematics(self, v, w):
-        wr = -(1/(self.WHEEL_DIAMETER/2)) * (v + (w * (self.WHEEL_TO_WHEEL_SEPERATION/2)))
-        wl = (1/(self.WHEEL_DIAMETER/2)) * (v - (w * (self.WHEEL_TO_WHEEL_SEPERATION/2)))
+        wr = -(1/(self.WHEEL_DIAMETER/2)) * (v + (w * (self.WHEEL_TO_WHEEL_SEPARATION/2)))
+        wl = (1/(self.WHEEL_DIAMETER/2)) * (v - (w * (self.WHEEL_TO_WHEEL_SEPARATION/2)))
         return wr, wl
