@@ -26,19 +26,21 @@ from .abstract.sensor import Sensor
 
 import mobot._proto.accelerometer_pb2_grpc as pb2_grpc
 
+
 class Accelerometer(pb2_grpc.AccelerometerServicer, Sensor):
+
     def __init__(self, logger, connection):
         Sensor.__init__(self, logger, connection)
 
-    ## Private method (used for grpc communication)
+    # Private method (used for grpc communication)
     def SetAccelerometerMetadata(self, accelerometer_metadata, context):
         return self._set_sensor_metadata(accelerometer_metadata, context)
 
-    ## Private method (used for grpc communication)
+    # Private method (used for grpc communication)
     def NewAccelerometerData(self, linear_acceleration, context):
         return self._new_sensor_data(linear_acceleration, context)
 
     def _format_data(self, linear_acceleration):
-        return np.array([linear_acceleration.x,\
-            linear_acceleration.y,\
-            linear_acceleration.z])
+        return np.array(
+            [linear_acceleration.x, linear_acceleration.y, linear_acceleration.z]
+        )

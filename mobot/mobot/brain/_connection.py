@@ -20,14 +20,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import grpc
 import threading
-import sys, signal
+import sys
+import signal
+
+import grpc
 
 import mobot._proto.common_pb2 as common_pb2
 import mobot._proto.connection_pb2_grpc as pb2_grpc
 
+
 class Connection:
+
     def __init__(self, ip, logger):
         self.logger = logger
 

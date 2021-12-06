@@ -20,7 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+
 class Asset:
+
     def __init__(self, logger, connection):
         self._logger = logger
         self._connection = connection

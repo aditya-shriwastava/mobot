@@ -22,9 +22,11 @@
 
 from mobot.brain.agent import Agent
 
+
 class GyroscopeTestAgent(Agent):
+
     def __init__(self):
-        Agent.__init__(self)
+        super.__init__()
         self.gyroscope.register_callback(self.gyroscope_cb)
 
     def gyroscope_cb(self, w, metadata):

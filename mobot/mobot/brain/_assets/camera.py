@@ -20,23 +20,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import numpy as np
 from io import BytesIO
 from PIL import Image
+
+import numpy as np
 
 from .abstract.sensor import Sensor
 
 import mobot._proto.camera_pb2_grpc as pb2_grpc
 
+
 class Camera(pb2_grpc.CameraServicer, Sensor):
+
     def __init__(self, logger, connection):
         Sensor.__init__(self, logger, connection)
 
-    ## Private method (used for grpc communication)
+    # Private method (used for grpc communication)
     def SetCameraMetadata(self, camera_metadata, context):
         return self._set_sensor_metadata(camera_metadata, context)
 
-    ## Private method (used for grpc communication)
+    # Private method (used for grpc communication)
     def NewCameraData(self, compressed_image, context):
         return self._new_sensor_data(compressed_image, context)
 

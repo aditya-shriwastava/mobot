@@ -26,15 +26,17 @@ from .abstract.sensor import Sensor
 
 import mobot._proto.gyroscope_pb2_grpc as pb2_grpc
 
+
 class Gyroscope(pb2_grpc.GyroscopeServicer, Sensor):
+
     def __init__(self, logger, connection):
         Sensor.__init__(self, logger, connection)
 
-    ## Private method (used for grpc communication)
+    # Private method (used for grpc communication)
     def SetGyroscopeMetadata(self, gyroscope_metadata, context):
         return self._set_sensor_metadata(gyroscope_metadata, context)
 
-    ## Private method (used for grpc communication)
+    # Private method (used for grpc communication)
     def NewGyroscopeData(self, angular_velocity, context):
         return self._new_sensor_data(angular_velocity, context)
 

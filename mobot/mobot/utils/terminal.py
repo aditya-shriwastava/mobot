@@ -24,6 +24,7 @@ import sys, select, termios, tty
 
 CTRL_PLUS_C = '\x03'
 
+
 def get_key(key_timeout):
     settings = termios.tcgetattr(sys.stdin)
     tty.setraw(sys.stdin.fileno())

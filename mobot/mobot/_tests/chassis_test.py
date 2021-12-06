@@ -21,13 +21,16 @@
 # SOFTWARE.
 
 import threading
+
 from mobot.brain.agent import Agent
 from mobot.utils.terminal import get_key
 from mobot.utils.rate import Rate
 
+
 class ChassisTestAgent(Agent):
+
     def __init__(self):
-        Agent.__init__(self)
+        super.__init__()
         self.chassis.enable()
         self.control_thread = threading.Thread(target=self.control_thread)
 
@@ -36,8 +39,7 @@ class ChassisTestAgent(Agent):
                          's':(-0.07,  0.0),\
                          'd':( 0.0, -0.5),\
                          ' ':( 0.0,  0.0)}
-        self.help_msg = """
-        Moving around:
+        self.help_msg = """Moving around:
                 w
            a    s    d
 
@@ -60,9 +62,11 @@ class ChassisTestAgent(Agent):
                 self.chassis.set_cmdvel(v=self.bindings[key][0], w=self.bindings[key][1])
             rate.sleep()
 
+
 def main():
     chassis_test_agent = ChassisTestAgent()
     chassis_test_agent.start()
+
 
 if __name__ == "__main__":
     main()

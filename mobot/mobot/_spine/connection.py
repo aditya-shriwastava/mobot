@@ -22,30 +22,35 @@
 
 import time
 import threading
+
 import grpc
 
 import mobot._proto.common_pb2 as common_pb2
 import mobot._proto.connection_pb2 as pb2
 import mobot._proto.connection_pb2_grpc as pb2_grpc
 
+
 class Resource:
+
     def __init__(self, uri):
         self.uri = uri
         self.lock = threading.Lock()
         self.lock.acquire()
         self.active = True
 
+
 class Connection(pb2_grpc.ConnectionServicer):
+
     def __init__(self, logger):
         self.logger = logger
         self.body = None
         self.brain = None
 
-    ## Private method (used for grpc communication)
+    # Private method (used for grpc communication)
     def Ping(self, _, context):
         return common_pb2.Empty()
 
-    ## Private method (used for grpc communication)
+    # Private method (used for grpc communication)
     def AttachBodyStream(self, _, context):
         ########################## Remember the Body ###########################
         if self.body != None:
@@ -73,7 +78,7 @@ class Connection(pb2_grpc.ConnectionServicer):
             self.body = None
             self.logger.info(f"Body detached!")
 
-    ## Private method (used for grpc communication)
+    # Private method (used for grpc communication)
     def AttachBrainStream(self, _, context):
         ########################## Remember the Body ###########################
         if self.brain != None:

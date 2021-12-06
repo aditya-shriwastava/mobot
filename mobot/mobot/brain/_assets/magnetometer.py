@@ -26,15 +26,17 @@ from .abstract.sensor import Sensor
 
 import mobot._proto.magnetometer_pb2_grpc as pb2_grpc
 
+
 class Magnetometer(pb2_grpc.MagnetometerServicer, Sensor):
+
     def __init__(self, logger, connection):
         Sensor.__init__(self, logger, connection)
 
-    ## Private method (used for grpc communication)
+    # Private method (used for grpc communication)
     def SetMagnetometerMetadata(self, magnetometer_metadata, context):
         return self._set_sensor_metadata(magnetometer_metadata, context)
 
-    ## Private method (used for grpc communication)
+    # Private method (used for grpc communication)
     def NewMagnetometerData(self, orientation, context):
         return self._new_sensor_data(orientation, context)
 

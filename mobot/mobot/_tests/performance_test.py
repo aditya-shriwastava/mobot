@@ -22,15 +22,18 @@
 
 import time
 import collections
-import numpy as np
 import threading
 import curses
 import texttable
 
+import numpy as np
+
 from mobot.brain.agent import Agent
 from mobot.utils.rate import Rate
 
+
 class HzEstimator:
+
     def __init__(self, history_len, source_name=""):
         self.source_name = source_name
         self.pings = collections.deque(maxlen=history_len)
@@ -56,9 +59,12 @@ class HzEstimator:
         self.hz_min = np.min(hzs)
         self.hz_max = np.max(hzs)
 
+
 class PerformanceTestAgent(Agent):
+
     def __init__(self):
-        Agent.__init__(self)
+
+        super().__init__()
         self.accelerometer.register_callback(self.accelerometer_cb)
         self.gyroscope.register_callback(self.gyroscope_cb)
         self.magnetometer.register_callback(self.magnetometer_cb)
@@ -142,9 +148,11 @@ class PerformanceTestAgent(Agent):
     def camera_cb(self, image, metadata):
         self.c_hz_ets.ping()
 
+
 def main():
     performance_test_agent = PerformanceTestAgent()
     performance_test_agent.start()
+
 
 if __name__ == "__main__":
     main()

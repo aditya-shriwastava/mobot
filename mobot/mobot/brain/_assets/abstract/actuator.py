@@ -20,14 +20,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import threading
+import time
+
 import grpc
-import threading, time
 
 from .asset import Asset
 
+
 class Actuator(Asset):
+
     def __init__(self, logger, connection):
-        Asset.__init__(self, logger, connection)
+        super().__init__(logger, connection)
 
         self.available = False
         self.latency = 0.0
@@ -43,7 +47,9 @@ class Actuator(Asset):
             self.__lock.acquire()
             self._set_metadata(metadata)
             self.available = True
-            is_available_thread = threading.Thread(target=self.__poll_is_available, args=(context,))
+            is_available_thread = threading.Thread(
+                target=self.__poll_is_available, args=(context,)
+            )
             is_available_thread.start()
             try:
                 while True:

@@ -21,20 +21,23 @@
 # SOFTWARE.
 
 import threading
+
 import numpy as np
+
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
 
 from mobot.brain.agent import Agent
 from mobot.utils.terminal import get_key, CTRL_PLUS_C
 from mobot.utils.rate import Rate
 from mobot.utils.joystick import Joystick
 
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
 
 class TeleopAgent(Agent):
+
     def __init__(self, ui):
-        Agent.__init__(self)
+        super().__init__()
         self.ui = ui
         self.camera.register_callback(self.camera_cb)
         self.flashlight.enable()
@@ -66,8 +69,7 @@ class TeleopAgent(Agent):
                          's':(-0.07,  0.0),\
                          'd':( 0.0, -0.5),\
                          ' ':( 0.0,  0.0)}
-        self.help_msg = """
-        Moving around:
+        self.help_msg = """Moving around:
                 w
            a    s    d
 
@@ -93,7 +95,9 @@ class TeleopAgent(Agent):
     def camera_cb(self, image, metadata):
         self.ui.set_image(image)
 
+
 class Ui:
+
     def setupUi(self, main_window):
         main_window.setWindowTitle("Dashboard")
         central_widget = QWidget()
@@ -121,6 +125,7 @@ class Ui:
         pixmap = pixmap.scaled(400,400, Qt.KeepAspectRatio)
         self.image.setPixmap(pixmap)
 
+
 def main():
     app = QApplication([])
     app.setStyle(QStyleFactory.create("Cleanlooks"))
@@ -132,6 +137,7 @@ def main():
     teleop_agent.start()
     if not app.exec():
         teleop_agent.terminate()
+
 
 if __name__ == "__main__":
     main()

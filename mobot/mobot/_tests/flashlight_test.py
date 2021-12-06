@@ -21,13 +21,18 @@
 # SOFTWARE.
 
 import threading
+
 from mobot.brain.agent import Agent
 
+
 class FlashlightTestAgent(Agent):
+
     def __init__(self):
-        Agent.__init__(self)
+        super.__init__()
         self.flashlight.enable()
-        self.control_thread = threading.Thread(target=self.control_thread)
+        self.control_thread = threading.Thread(
+            target=self.control_thread
+        )
 
     def on_start(self):
         self.control_thread.start()
@@ -35,9 +40,11 @@ class FlashlightTestAgent(Agent):
     def control_thread(self):
         self.flashlight.turn_on()
 
+
 def main():
     flashlight_test_agent = FlashlightTestAgent()
     flashlight_test_agent.start()
+
 
 if __name__ == "__main__":
     main()

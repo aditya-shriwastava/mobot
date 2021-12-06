@@ -21,8 +21,10 @@
 # SOFTWARE.
 
 from concurrent import futures
+import sys
+import signal
+
 import grpc
-import sys, signal
 
 import mobot._proto as proto
 from ._connection import Connection
@@ -39,7 +41,9 @@ from ._assets.listen import Listen
 from mobot.utils.network import _get_ip_address
 from mobot.utils.logging import _get_logger
 
+
 class Agent:
+
     def __init__(self):
         self.logger = _get_logger()
 
@@ -58,32 +62,58 @@ class Agent:
         self.__connection = Connection(ip, self.logger)
 
         self.camera = Camera(self.logger, self.__connection)
-        proto.camera_pb2_grpc.add_CameraServicer_to_server(self.camera, self.__server)
+        proto.camera_pb2_grpc.add_CameraServicer_to_server(
+            self.camera,
+            self.__server
+        )
 
         self.chassis = Chassis(self.logger, self.__connection)
-        proto.chassis_pb2_grpc.add_ChassisServicer_to_server(self.chassis, self.__server)
+        proto.chassis_pb2_grpc.add_ChassisServicer_to_server(
+            self.chassis,
+            self.__server
+        )
 
         self.accelerometer = Accelerometer(self.logger, self.__connection)
-        proto.accelerometer_pb2_grpc.add_AccelerometerServicer_to_server(self.accelerometer, self.__server)
+        proto.accelerometer_pb2_grpc.add_AccelerometerServicer_to_server(
+            self.accelerometer,
+            self.__server
+        )
 
         self.gyroscope = Gyroscope(self.logger, self.__connection)
-        proto.gyroscope_pb2_grpc.add_GyroscopeServicer_to_server(self.gyroscope, self.__server)
+        proto.gyroscope_pb2_grpc.add_GyroscopeServicer_to_server(
+            self.gyroscope,
+            self.__server
+        )
 
         self.magnetometer = Magnetometer(self.logger, self.__connection)
-        proto.magnetometer_pb2_grpc.add_MagnetometerServicer_to_server(self.magnetometer, self.__server)
+        proto.magnetometer_pb2_grpc.add_MagnetometerServicer_to_server(
+            self.magnetometer,
+            self.__server
+        )
 
         self.flashlight = Flashlight(self.logger, self.__connection)
-        proto.flashlight_pb2_grpc.add_FlashlightServicer_to_server(self.flashlight, self.__server)
+        proto.flashlight_pb2_grpc.add_FlashlightServicer_to_server(
+            self.flashlight,
+            self.__server
+        )
 
         self.speak = Speak(self.logger, self.__connection)
-        proto.speak_pb2_grpc.add_SpeakServicer_to_server(self.speak, self.__server)
+        proto.speak_pb2_grpc.add_SpeakServicer_to_server(
+            self.speak,
+            self.__server
+        )
 
         self.listen = Listen(self.logger, self.__connection)
-        proto.listen_pb2_grpc.add_ListenServicer_to_server(self.listen, self.__server)
+        proto.listen_pb2_grpc.add_ListenServicer_to_server(
+            self.listen,
+            self.__server
+        )
 
-        self.__actuators = [("chassis", self.chassis),\
-                ("flashlight", self.flashlight),\
-                ("speak", self.speak)]
+        self.__actuators = [
+            ("chassis", self.chassis),
+            ("flashlight", self.flashlight),
+            ("speak", self.speak)
+        ]
 
     def start(self):
         self.__server.start()
@@ -91,7 +121,7 @@ class Agent:
         if self.__wait_until_available():
             self.on_start()
 
-    ## Waits until all the actuators that are enabled is available
+    # Waits until all the actuators that are enabled is available
     def __wait_until_available(self):
         for actuator_name, actuator in self.__actuators:
             if actuator._is_enabled():

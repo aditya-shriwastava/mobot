@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 from concurrent import futures
+
 import grpc
 
 import mobot._proto.connection_pb2_grpc as pb2_grpc
@@ -28,6 +29,7 @@ import mobot._proto.connection_pb2_grpc as pb2_grpc
 from .connection import Connection
 from mobot.utils.network import _get_ip_address
 from mobot.utils.logging import _get_logger
+
 
 def main():
     logger = _get_logger()

@@ -24,7 +24,9 @@ from .asset import Asset
 
 import mobot._proto.common_pb2 as common_pb2
 
+
 class Sensor(Asset):
+
     def __init__(self, logger, connection):
         Asset.__init__(self, logger, connection)
         self.__metadata = None

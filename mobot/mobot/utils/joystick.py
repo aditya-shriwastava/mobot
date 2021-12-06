@@ -2,7 +2,9 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
+
 class Joystick(QWidget):
+
     pose = pyqtSignal(float,float)
     def __init__(self, parent=None):
         super(Joystick, self).__init__(parent)
@@ -18,7 +20,12 @@ class Joystick(QWidget):
         painter.drawEllipse(self._centerEllipse())
 
     def _bound(self):
-        bounds = QRectF(-self.__maxDistance, -self.__maxDistance, self.__maxDistance * 2, self.__maxDistance * 2)
+        bounds = QRectF(
+            -self.__maxDistance,
+            -self.__maxDistance,
+            self.__maxDistance * 2,
+            self.__maxDistance * 2
+        )
         return bounds.translated(self._center())
 
     def _centerEllipse(self):

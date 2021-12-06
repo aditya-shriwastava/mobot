@@ -22,9 +22,11 @@
 
 from mobot.brain.agent import Agent
 
+
 class AccelerometerTestAgent(Agent):
+
     def __init__(self):
-        Agent.__init__(self)
+        super.__init__()
         self.accelerometer.register_callback(self.accelerometer_cb)
 
     def accelerometer_cb(self, a, metadata):
@@ -33,9 +35,11 @@ class AccelerometerTestAgent(Agent):
         az = "{:.2f}".format(a[2])
         self.logger.info(f"ax: {ax}, ay: {ay}, az: {az}")
 
+
 def main():
     accelerometer_test_agent = AccelerometerTestAgent()
     accelerometer_test_agent.start()
+
 
 if __name__ == "__main__":
     main()

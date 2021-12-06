@@ -25,12 +25,14 @@ from .abstract.actuator import Actuator
 import mobot._proto.flashlight_pb2 as pb2
 import mobot._proto.flashlight_pb2_grpc as pb2_grpc
 
+
 class Flashlight(pb2_grpc.FlashlightServicer, Actuator):
+
     def __init__(self, logger, connection):
         Actuator.__init__(self, logger, connection)
         self.__on = False
 
-    ## Private method (used for grpc communication)
+    # Private method (used for grpc communication)
     def FlashlightCmdStream(self, flashlight_metadata, context):
         for cmd in self._actuator_cmd_stream(flashlight_metadata, context):
             yield cmd

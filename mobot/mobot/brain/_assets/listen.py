@@ -24,15 +24,17 @@ from .abstract.sensor import Sensor
 
 import mobot._proto.listen_pb2_grpc as pb2_grpc
 
+
 class Listen(pb2_grpc.ListenServicer, Sensor):
+
     def __init__(self, logger, connection):
         Sensor.__init__(self, logger, connection)
 
-    ## Private method (used for grpc communication)
+    # Private method (used for grpc communication)
     def SetListenMetadata(self, listen_metadata, context):
         return self._set_sensor_metadata(listen_metadata, context)
 
-    ## Private method (used for grpc communication)
+    # Private method (used for grpc communication)
     def NewListenData(self, message, context):
         return self._new_sensor_data(message, context)
 
