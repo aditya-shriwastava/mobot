@@ -26,7 +26,7 @@ from mobot.brain.agent import Agent
 class MagnetometerTestAgent(Agent):
 
     def __init__(self):
-        super.__init__()
+        super().__init__()
         self.magnetometer.register_callback(self.magnetometer_cb)
 
     def magnetometer_cb(self, q, metadata):

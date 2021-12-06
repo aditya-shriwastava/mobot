@@ -29,7 +29,7 @@ from mobot.utils.image_grid import ImageGrid
 class CameraTestAgent(Agent):
 
     def __init__(self):
-        super.__init__()
+        super().__init__()
         self.seq = 0
         self.camera.register_callback(self.camera_cb)
         self.image_grid = ImageGrid(self)

@@ -26,7 +26,7 @@ from mobot.brain.agent import Agent
 class AccelerometerTestAgent(Agent):
 
     def __init__(self):
-        super.__init__()
+        super().__init__()
         self.accelerometer.register_callback(self.accelerometer_cb)
 
     def accelerometer_cb(self, a, metadata):

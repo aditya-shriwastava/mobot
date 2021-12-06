@@ -30,7 +30,7 @@ from mobot.utils.rate import Rate
 class ChassisTestAgent(Agent):
 
     def __init__(self):
-        super.__init__()
+        super().__init__()
         self.chassis.enable()
         self.control_thread = threading.Thread(target=self.control_thread)
 
