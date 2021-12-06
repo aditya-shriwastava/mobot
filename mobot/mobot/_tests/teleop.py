@@ -58,8 +58,8 @@ class TeleopAgent(Agent):
         self.flashlight.toggle()
 
     def joystick_cb(self, x, y):
-        wmax = (self.chassis.wheel_diameter * self.chassis.max_wheel_speed)/self.chassis.wheel_to_wheel_separation
-        vmax = (self.chassis.wheel_diameter * self.chassis.max_wheel_speed)/2
+        wmax = (self.chassis.WHEEL_DIAMETER * self.chassis.MAX_WHEEL_SPEED)/self.chassis.WHEEL_TO_WHEEL_SEPERATION
+        vmax = (self.chassis.WHEEL_DIAMETER * self.chassis.MAX_WHEEL_SPEED)/2
         self.cmd_v = -(y/100) * vmax
         self.cmd_w = -(x/100) * wmax
 
