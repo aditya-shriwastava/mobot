@@ -5,13 +5,10 @@
 # What is Mobot?
 
 If you are looking for a mobile robot to experiment with then you will notice:
-- Good ones are very expensive
-- and affordable ones are incapable of doing anything significant
+- Good ones are very expensive,
+- and affordable ones are incapable of doing anything.
 
-Mobot is a mobile robot that leverages the capabilities of mobile phone and laptop which makes it very capable but yet inexpensive.
-
-1. **Mobile Phone:** For its camera, accelerometer, gyroscope, magnetometer, speaker, microphone, flashlight, battery, touchscreen, wifi & LTE Modem.
-2. **Laptop:** For its powerful computational capabilities (i.e. CPUs & GPUs) and as a platform for programming and visualizing results.
+Mobot is a mobile robot that leverages the capabilities of mobile phone (i.e. Cameras, IMU, Speaker, Microphone, Flashlight, Battery, Touchscreen, WiFi, LTE Modem, CPU, & GPUs) which makes it very capable but yet inexpensive.
 
 # To get started you need 3 things
 
