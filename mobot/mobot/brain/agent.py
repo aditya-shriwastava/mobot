@@ -29,14 +29,14 @@ import grpc
 import mobot._proto as proto
 from ._connection import Connection
 
-from ._assets.camera import Camera
-from ._assets.chassis import Chassis
-from ._assets.accelerometer import Accelerometer
-from ._assets.gyroscope import Gyroscope
-from ._assets.magnetometer import Magnetometer
-from ._assets.flashlight import Flashlight
-from ._assets.speak import Speak
-from ._assets.listen import Listen
+from .assets.camera import Camera
+from .assets.chassis import Chassis
+from .assets.accelerometer import Accelerometer
+from .assets.gyroscope import Gyroscope
+from .assets.magnetometer import Magnetometer
+from .assets.flashlight import Flashlight
+from .assets.speak import Speak
+from .assets.listen import Listen
 
 from mobot.utils.network import _get_ip_address
 from mobot.utils.logging import _get_logger
