@@ -1,42 +1,21 @@
-# MIT License
-#
-# Copyright (c) 2021 Mobotx
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
 import threading
 
 import numpy as np
 import cv2
 
+from mobot.brain.agent import Agent
 
 def _do_nothing(x):
     pass
 
 
-'''
-- Simple wrapper around cv2 high level gui
-- Features:
-    1. Grid of images of fixed size.
-    2. Trackbars
-'''
 class ImageGrid:
+    """Simple wrapper around cv2 high level gui
+
+    Features:
+        1. Grid of images of fixed size.
+        2. Trackbars
+    """
 
     def __init__(self, agent, name="Image Grid", size=(1,1), image_size=(640,480,3)):
         self.__agent = agent
@@ -75,3 +54,26 @@ class ImageGrid:
         self.__image_grid[index[0] * self.__image_size[0]:(index[0]+1) * self.__image_size[0],\
                           index[1] * self.__image_size[1]:(index[1]+1) * self.__image_size[1],\
                           :] = image
+
+
+class CameraTestAgent(Agent):
+
+    def __init__(self):
+        super().__init__()
+        self.seq = 0
+        self.camera.register_callback(self.camera_cb)
+        self.image_grid = ImageGrid(self)
+
+    def camera_cb(self, image, metadata):
+        self.seq += 1
+        print(f"Frame {self.seq}")
+        self.image_grid.new_image(image)
+
+
+def main():
+    camera_test_agent = CameraTestAgent()
+    camera_test_agent.start()
+
+
+if __name__ == "__main__":
+    main()

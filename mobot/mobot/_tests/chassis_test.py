@@ -20,11 +20,28 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import sys
+import select
+import termios
+import tty
 import threading
 
 from mobot.brain.agent import Agent
-from mobot.utils.terminal import get_key
 from mobot.utils.rate import Rate
+
+CTRL_PLUS_C = '\x03'
+
+
+def get_key(key_timeout):
+    settings = termios.tcgetattr(sys.stdin)
+    tty.setraw(sys.stdin.fileno())
+    rlist, _, _ = select.select([sys.stdin], [], [], key_timeout)
+    if rlist:
+        key = sys.stdin.read(1)
+    else:
+        key = ''
+    termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
+    return key
 
 
 class ChassisTestAgent(Agent):
@@ -55,7 +72,7 @@ class ChassisTestAgent(Agent):
         rate = Rate(10)
         while self.ok():
             key = get_key(0.1)
-            if key == '\x03': # Ctrl + c
+            if key == CTRL_PLUS_C:
                 self.terminate()
                 break
             if key in self.bindings:
