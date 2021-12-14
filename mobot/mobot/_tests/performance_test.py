@@ -44,9 +44,9 @@ class HzEstimator:
 
     def ping(self):
         self.pings.append(time.time())
-        self.update()
+        self._update()
 
-    def update(self):
+    def _update(self):
         pings = np.array(self.pings)
         n_pings = len(pings)
         if n_pings < 2:
@@ -63,7 +63,6 @@ class HzEstimator:
 class PerformanceTestAgent(Agent):
 
     def __init__(self):
-
         super().__init__()
         self.accelerometer.register_callback(self.accelerometer_cb)
         self.gyroscope.register_callback(self.gyroscope_cb)

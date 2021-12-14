@@ -33,8 +33,7 @@ class Actuator(Asset):
     def __init__(self, logger, connection):
         super().__init__(logger, connection)
 
-        self.available = False
-        self.latency = 0.0
+        self._available = False
         self.__cmd = None
 
         self.__lock = threading.Lock()
@@ -46,7 +45,7 @@ class Actuator(Asset):
         if self._is_body(context) and self.__enabled:
             self.__lock.acquire()
             self._set_metadata(metadata)
-            self.available = True
+            self._available = True
             is_available_thread = threading.Thread(
                 target=self.__poll_is_available, args=(context,)
             )
@@ -54,14 +53,14 @@ class Actuator(Asset):
             try:
                 while True:
                     self.__lock.acquire()
-                    if self.available:
+                    if self._available:
                         yield self.__cmd
                         if self.__new_cmd_lock.locked():
                             self.__new_cmd_lock.release()
                     else:
                         raise grpc.RpcError
             except grpc.RpcError:
-                self.available = False
+                self._available = False
                 self.__cmd = None
                 self._reset_metadata()
                 self.__lock.release()
@@ -71,7 +70,7 @@ class Actuator(Asset):
     def __poll_is_available(self, context):
         while context.is_active():
             time.sleep(0.1)
-        self.available = False
+        self._available = False
         self.__lock.release()
 
     def _new_cmd(self, cmd, blocking=False):
@@ -89,8 +88,8 @@ class Actuator(Asset):
     def _is_enabled(self):
         return self.__enabled
 
-    def wait_until_available(self):
-        while not self.available:
+    def _wait_until_available(self):
+        while not self._available:
             time.sleep(0.1)
             if not self._connection.attach_brain_iterator.is_active():
                 return False

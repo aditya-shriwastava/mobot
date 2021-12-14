@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 from .abstract.actuator import Actuator
+from mobot.brain._exceptions import AssetNotAvailable
 
 import mobot._proto.flashlight_pb2 as pb2
 import mobot._proto.flashlight_pb2_grpc as pb2_grpc
@@ -38,27 +39,29 @@ class Flashlight(pb2_grpc.FlashlightServicer, Actuator):
             yield cmd
 
     def turn_on(self):
-        success = self.__change_state(True)
-        if success:
+        if not self._available:
+            raise AssetNotAvailable
+        else:
+            self._new_cmd(pb2.FlashlightState(on=True))
             self.__on = True
-        return success
 
     def is_on(self):
+        if not self._available:
+            raise AssetNotAvailable
         return self.__on
 
     def turn_off(self):
-        success = self.__change_state(False)
-        if success:
-            self.__on = False
-        return success
+        if not self._available:
+            raise AssetNotAvailable
+        else:
+            self._new_cmd(pb2.FlashlightState(on=False))
+            self.__on = True
 
     def toggle(self):
-        if self.__on:
-            return self.turn_off()
-        else:
-            return self.turn_on()
+        if not self._available:
+            raise AssetNotAvailable
 
-    def __change_state(self, state):
-        if self.available:
-            self._new_cmd(pb2.FlashlightState(on=state))
-        return self.available
+        if self.__on:
+            self.turn_off()
+        else:
+            self.turn_on()

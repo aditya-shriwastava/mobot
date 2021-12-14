@@ -126,7 +126,7 @@ class Agent:
         for actuator_name, actuator in self.__actuators:
             if actuator._is_enabled():
                 self.logger.info(f"Waiting for {actuator_name} to be available...")
-                if actuator.wait_until_available():
+                if actuator._wait_until_available():
                     self.logger.info(f"{actuator_name} available!")
                 else:
                     return False

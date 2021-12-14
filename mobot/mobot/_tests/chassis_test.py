@@ -33,6 +33,7 @@ CTRL_PLUS_C = '\x03'
 
 
 def get_key(key_timeout):
+    """Returns charecter pressed"""
     settings = termios.tcgetattr(sys.stdin)
     tty.setraw(sys.stdin.fileno())
     rlist, _, _ = select.select([sys.stdin], [], [], key_timeout)

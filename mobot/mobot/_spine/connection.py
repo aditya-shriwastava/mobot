@@ -31,6 +31,7 @@ import mobot._proto.connection_pb2_grpc as pb2_grpc
 
 
 class Resource:
+    """Holds info about brain/body"""
 
     def __init__(self, uri):
         self.uri = uri
@@ -52,7 +53,7 @@ class Connection(pb2_grpc.ConnectionServicer):
 
     # Private method (used for grpc communication)
     def AttachBodyStream(self, _, context):
-        ########################## Remember the Body ###########################
+        # 1. If (body already attached) "reject request" else "accept request"
         if self.body != None:
             error_msg = f"Attach Body request from \"{context.peer()}\" rejected as body at \"{self.body.uri}\" is attached!"
             self.logger.error(error_msg)
@@ -61,10 +62,11 @@ class Connection(pb2_grpc.ConnectionServicer):
         else:
             self.body = Resource(pb2.URI(uri = context.peer()))
             self.logger.info(f"Body at \"{self.body.uri.uri}\" attached!")
-        ########################################################################
-
+        
+        # 2. poll for whether the body is active
         is_active_thread = threading.Thread(target=self.poll_is_active, args=(context, self.body))
         is_active_thread.start()
+
         try:
             if self.brain!= None:
                 self.brain.lock.release()
@@ -80,7 +82,7 @@ class Connection(pb2_grpc.ConnectionServicer):
 
     # Private method (used for grpc communication)
     def AttachBrainStream(self, _, context):
-        ########################## Remember the Body ###########################
+        # 1. If (brain already attached) "reject request" else "accept request"
         if self.brain != None:
             error_msg = f"Attach Brain request from \"{context.peer()}\" rejected as brain at \"{self.brain.uri}\" is attached!"
             self.logger.error(error_msg)
@@ -90,10 +92,11 @@ class Connection(pb2_grpc.ConnectionServicer):
             brain_uri = ':'.join(context.peer().split(':')[:2]) + ':50052'
             self.brain = Resource(pb2.URI(uri = brain_uri))
             self.logger.info(f"Brain at \"{self.brain.uri.uri}\" attached!")
-        ########################################################################
 
+        # 2. poll for whether the brain is active
         is_active_thread = threading.Thread(target=self.poll_is_active, args=(context, self.brain))
         is_active_thread.start()
+
         try:
             if self.body!= None:
                 self.brain.lock.release()

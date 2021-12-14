@@ -20,25 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from .abstract.actuator import Actuator
-from mobot.brain._exceptions import AssetNotAvailable
 
-import mobot._proto.talk_pb2 as pb2
-import mobot._proto.speak_pb2_grpc as pb2_grpc
-
-
-class Speak(pb2_grpc.SpeakServicer, Actuator):
-
-    def __init__(self, logger, connection):
-        Actuator.__init__(self, logger, connection)
-
-    # Private method (used for grpc communication)
-    def SpeakCmdStream(self, speak_metadata, context):
-        for cmd in self._actuator_cmd_stream(speak_metadata, context):
-            yield cmd
-
-    def speak(self, text):
-        if self.available:
-            self._new_cmd(pb2.Message(text=text))
-        else:
-            raise AssetNotAvailable
+class AssetNotAvailable(Exception):
+    pass

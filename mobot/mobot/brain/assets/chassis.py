@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 from .abstract.actuator import Actuator
+from mobot.brain._exceptions import AssetNotAvailable
 
 import mobot._proto.chassis_pb2 as pb2
 import mobot._proto.chassis_pb2_grpc as pb2_grpc
@@ -35,7 +36,7 @@ class Chassis(pb2_grpc.ChassisServicer, Actuator):
         self.MAX_WHEEL_SPEED = None
         self.MIN_WHEEL_SPEED = None
 
-    ## Private method (used for grpc communication)
+    # Private method (used for grpc communication)
     def ChassisCmdStream(self, chassis_metadata, context):
         for cmd in self._actuator_cmd_stream(chassis_metadata, context):
             yield cmd
@@ -53,15 +54,17 @@ class Chassis(pb2_grpc.ChassisServicer, Actuator):
         self.MIN_WHEEL_SPEED = None
 
     def set_wheel_velocity(self, wr=0.0, wl=0.0, blocking=True):
-        if self.available:
+        if self._available:
             self._new_cmd(pb2.CmdVel(wr=wr, wl=wl), blocking=blocking)
-        return self.available
+        else:
+            raise AssetNotAvailable
 
     def set_cmdvel(self, v=0.0, w=0.0, blocking=True):
-        if self.available:
+        if self._available:
             wr, wl = self.__inverse_kinematics(v, w)
             self._new_cmd(pb2.CmdVel(wr=wr, wl=wl), blocking=blocking)
-        return self.available
+        else:
+            raise AssetNotAvailable
 
     def __inverse_kinematics(self, v, w):
         wr = -(1/(self.WHEEL_DIAMETER/2)) * (v + (w * (self.WHEEL_TO_WHEEL_SEPARATION/2)))
