@@ -1,7 +1,5 @@
 ![Mobot Banner](./assets/banners/mobot_banner.png)
 
-[![Test mobot python package](https://github.com/mobotx/mobot/actions/workflows/test.yml/badge.svg)](https://github.com/mobotx/mobot/actions/workflows/test.yml)
-
 # What is Mobot?
 
 If you are looking for a mobile robot to experiment with then you will notice:
