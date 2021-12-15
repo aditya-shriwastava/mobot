@@ -1,4 +1,4 @@
-name: Upload Python Package
+name: Upload mobot_utils to pypi
 on:
   workflow_dispatch:
   release:
