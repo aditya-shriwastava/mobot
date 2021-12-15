@@ -1,5 +1,6 @@
 name: Publish Mobot App to Playstore
 on:
+  workflow_dispatch:
   release:
     types: [published]
 jobs:
