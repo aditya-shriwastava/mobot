@@ -32,7 +32,7 @@ jobs:
           keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
 
       - name: Publish to Play Store
-        uses: r0adkll/upload-google-play@v1
+        uses: r0adkll/upload-google-play@v1.0.15
         with:
           serviceAccountJsonPlainText: ${{secrets.PUBLISH_MOBOT_APP_SERVICE_ACCOUNT}}
           packageName: io.github.mobotx
