@@ -8,6 +8,8 @@ If you are looking for a mobile robot to experiment with then you will notice:
 
 Mobot is a mobile robot that leverages the capabilities of mobile phone (i.e. Cameras, IMU, Speaker, Microphone, Flashlight, Battery, Touchscreen, WiFi, LTE Modem, CPU, & GPUs) which makes it very capable but yet inexpensive.
 
+[![Mobot](http://img.youtube.com/vi/ZeK9BnxgXew/0.jpg)](http://www.youtube.com/watch?v=ZeK9BnxgXew "Mobot")
+
 # To get started you need 3 things
 
 1. [Chassis for mobot.](./chassis)
